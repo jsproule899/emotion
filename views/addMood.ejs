@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emotion - Add new mood</title>
+    <link rel="icon" href="emotion.png">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="mystyles.css">
+</head>
+
+<body>
+    <% const timestamp=new Date().toUTCString();%>
+        <%- include('partials/navbar') %>
+
+
+
+            <div class="container pb-3">
+                <div class="container bg-body-tertiary my-4 mb-5 py-4 rounded-2 w-100 shadow"
+                    style="max-width: 1000px;">
+                    <h2 class="text-center fw-semibold fs-5 text-decoration-underline"><i
+                            class="bi bi-calendar-event mx-1"></i>
+                        <%=timestamp.substring(0,22)%>
+                    </h2>
+                    <h1 class="text-center fw-bold fs-1">How are you feeling?</h1>
+
+
+                    <form class="pt-3 d-flex justify-content-center">
+                        <div class="col-10">
+
+                            <%emotions.forEach(emotions =>{%>
+                                <div class="row">
+                                    <div class="col-12 mx-auto text-center">
+                                        <label for="enjoyment" class="form-label fw-medium fs-4 mb-0"><%-
+                                                emotions.emotion_name.substring(0,1).toUpperCase()
+                                                +emotions.emotion_name.substring(1, emotions.emotion_name.length)
+                                                %></label>
+                                    </div>
+
+                                    <div class="row mx-0 px-0">
+                                        <div class="col-1 m-0 p-0 fw-medium fs-3 d-flex justify-content-end">
+                                            <i class="bi <%=emotions.emotion_icon%> "></i>
+                                        </div>
+                                        <div class="col-10 mx-0 px-3 d-flex align-items-center">
+                                            <input type="range" class="custom-range"
+                                                style="--slider-color: <%- emotions.emotion_colour%>" min="0" max="10"
+                                                id=<%- emotions.emotion_name %>>
+                                        </div>
+                                        <div class="col-1 m-0 p-0 d-flex align-items-center text-center">
+                                            <output for="enjoyment" id=<%=emotions.emotion_name + "-value" %>
+                                                class="slider-value"
+                                                style="--slider-color: <%- emotions.emotion_colour%>">5</output>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                
+                                <Script>
+                                    const <%=emotions.emotion_name %> = document.getElementById('<%= emotions.emotion_name
+                                        %> ');
+                                        const <%=emotions.emotion_name + "Value" %> = document.getElementById('
+                                            <%=emotions.emotion_name + "-value" %> ');
+
+                                        <%= emotions.emotion_name %>.addEventListener("input", () => {
+                                                    <%=emotions.emotion_name + "Value" %>.value = <%=
+                                            emotions.emotion_name %>.value;
+                                        })
+                                </Script>
+
+
+                                <%}); %>
+
+
+                                    <!-- <div class="row">
+                                        <div class="col-12 ms-3">
+                                            <label for="enjoyment" class="form-label fw-medium fs-4">Enjoyment</label>
+                                        </div>
+
+                                        <div class="row mx-0 ">
+                                            <div class="col-11 mx-0 px-3">
+                                                <input type="range" class="custom-range"
+                                                    style="--slider-color: MediumSeaGreen" min="0" max="10"
+                                                    id="enjoyment">
+                                            </div>
+                                            <div class="col-1 m-0 p-0">
+                                                <output for="enjoyment" id="enjoyment-value" class="slider-value"
+                                                    style="--slider-color: MediumSeaGreen">5</output>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <div class="row">
+                                        <div class="col-12 ms-3">
+                                            <label for="sadness" class="form-label fw-medium fs-4">Sadness</label>
+                                        </div>
+
+                                        <div class="row mx-0 ">
+                                            <div class="col-11 mx-0 px-3">
+                                                <input type="range" class="custom-range"
+                                                    style="--slider-color: CornflowerBlue" min="0" max="10"
+                                                    id="sadness">
+                                            </div>
+                                            <div class="col-1 m-0 p-0">
+                                                <output class="slider-value" id="sad-value"
+                                                    style="--slider-color: CornflowerBlue">5</output>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row ">
+                                        <div class="col-12 ms-3">
+                                            <label for="anger" class="form-label fw-medium fs-4">Anger</label>
+                                        </div>
+
+                                        <div class="row mx-0 ">
+                                            <div class="col-11 mx-0 px-3">
+                                                <input type="range" class="custom-range"
+                                                    style="--slider-color: Indianred" min="0" max="10" id="anger">
+                                            </div>
+                                            <div class="col-1 m-0 p-0">
+                                                <output class="slider-value" id="anger-value"
+                                                    style="--slider-color: Indianred">5</output>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row ">
+                                        <div class="col-12 ms-3">
+                                            <label for="contempt" class="form-label fw-medium fs-4">Contempt</label>
+                                        </div>
+                                        <div class="row mx-0 ">
+                                            <div class="col-11 mx-0 px-3">
+                                                <input type="range" class="custom-range"
+                                                    style="--slider-color: LightPink" min="0" max="10" id="contempt">
+                                            </div>
+                                            <div class="col-1 m-0 p-0">
+                                                <output class="slider-value" id="contempt-value"
+                                                    style="--slider-color: LightPink">5</output>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12 ms-3">
+                                            <label for="disgust" class="form-label fw-medium fs-4">Disgust</label>
+                                        </div>
+                                        <div class="row mx-0 ">
+                                            <div class="col-11 mx-0 px-3">
+                                                <input type="range" class="custom-range"
+                                                    style="--slider-color: MediumPurple" min="0" max="10" id="disgust">
+                                            </div>
+                                            <div class="col-1 m-0 p-0">
+                                                <output class="slider-value" id="disgust-value"
+                                                    style="--slider-color: MediumPurple">5</output>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row ">
+                                        <div class="col-12 ms-3">
+                                            <label for="fear" class="form-label fw-medium fs-4">Fear</label>
+                                        </div>
+                                        <div class="row mx-0 ">
+                                            <div class="col-11 mx-0 px-3">
+                                                <input type="range" class="custom-range"
+                                                    style="--slider-color: Chocolate" min="0" max="10" id="fear">
+                                            </div>
+                                            <div class="col-1 m-0 p-0">
+                                                <output class="slider-value" id="fear-value"
+                                                    style="--slider-color: Chocolate">5</output>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row ">
+                                        <div class="col-12 ms-3">
+                                            <label for="surprise" class="form-label fw-medium fs-4">Surprise</label>
+                                        </div>
+                                        <div class="row mx-0 ">
+                                            <div class="col-11 mx-0 px-3">
+                                                <input type="range" class="custom-range"
+                                                    style="--slider-color: Goldenrod" min="0" max="10" id="surprise">
+                                            </div>
+                                            <div class="col-1 m-0 p-0">
+                                                <output class="slider-value" id="surprise-value"
+                                                    style="--slider-color: Goldenrod">5</output>
+                                            </div>
+                                        </div>
+                                    </div> -->
+                                    <div class="row my-2">
+                                        <div class="col-1 my-2 p-0 d-flex align-items-center justify-content-start">
+                                            <i class="col-1 bi bi-arrow-left-short " id="context-scroll-left"></i>
+                                        </div>
+                                        <div class="col-10 my-2 mx-0 p-0 d-flex justify-content-center ">
+
+                                            <ul class="list-group list-group-horizontal mb-3 overflow-x-scroll context-scroll"
+                                                id="context-list">
+
+
+                                                <%contextType.forEach(function(contextType){%>
+                                                    <div class="text-center ">
+                                                        <h6 class="fw-lighter m-0" style="font-size: 0.75rem;">
+                                                            <%=contextType.context_type_name %>
+                                                        </h6>
+
+                                                        <li type="checkbox"
+                                                            class=" list-group-item border border-3 rounded mx-1 my-auto "
+                                                            id="<%=contextType.context_type_name %>">
+                                                            <i
+                                                                class="bi <%=contextType.context_icon%> fw-medium fs-2"></i>
+                                                        </li>
+                                                    </div>
+
+
+                                                    <script>
+                                                                                    const <%=contextType.context_type_name %> =
+                                                        document.getElementById('<%=contextType.context_type_name %>')
+                                                            <%=contextType.context_type_name %>.addEventListener('click', () => {
+                                                                <%=contextType.context_type_name %>.checked = !<%= contextType.context_type_name %>.checked;
+                                                    <%=contextType.context_type_name %>.classList.toggle('border-success-subtle');
+                                                    <%=contextType.context_type_name %>.classList.toggle('text-success');
+
+                                                                if (<%= contextType.context_type_name %>.checked) {
+                                                            console.log(<%=contextType.context_type_name %>.id + " is checked");
+                                                        } else {
+                                                            console.log(<%=contextType.context_type_name %>.id + " is not checked");
+                                                        }
+                                                    
+                                                    })
+
+                                                    </script>
+
+                                                    <% }) %>
+
+                                            </ul>
+
+                                        </div>
+                                        <div class="col-1 my-2 p-0 d-flex align-items-center justify-content-center">
+                                            <i class="col-1 bi bi-arrow-right-short  " id="context-scroll-right"></i>
+                                        </div>
+                                        <script>
+                                            const contextScrollRight = document.getElementById('context-scroll-right');
+                                            const contextScrollLeft = document.getElementById('context-scroll-left');
+                                            const contextList = document.getElementById('context-list');
+
+
+                                            contextScrollRight.addEventListener('click', () => {
+                                                contextList.scroll(500, "smooth");
+                                            })
+
+                                            contextScrollLeft.addEventListener('click', () => {
+                                                contextList.scroll(-500, "smooth");
+                                            })
+
+                                        </script>
+
+                                        <div class="row d-flex justify-content-center mx-auto">
+                                            <label for=""></label>
+                                            <input type="text" class="form-control" id="conext-comment" maxlength="100"
+                                                placeholder="Add a comment...">
+                                        </div>
+                                    </div>
+                                    <div class="row  justify-content-center ">
+                                        <button type="button" class="btn btn-primary col-8 my-3" id="addbtn">Add
+                                            mood</button>
+                                    </div>
+                    </form>
+                </div>
+            </div>
+            </div>
+            <%- include('partials/footer') %>
+
+
+
+
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                    integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+                    crossorigin="anonymous"></script>
+
+
+
+
+
+</body>
+
+</html>

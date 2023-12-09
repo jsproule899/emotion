@@ -1,0 +1,86 @@
+
+ 
+ :root {
+    --slider-color: cornflowerblue;
+    
+   
+}
+
+body::-webkit-scrollbar {
+        display: none;
+      }
+
+
+
+.slider-value{
+    background: var(--slider-color);
+    color:whitesmoke;
+    height: 1.5rem;
+    width: 1.5rem;
+    border-radius: 50%;
+    text-align: center;
+    border-style: none; 
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+
+    height: 1.5rem;
+    width: 100%;
+    background: gainsboro; 
+    border-radius: 15px;
+    outline: none;
+    overflow: hidden;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border-radius: 10px;
+    height: 1.5rem;
+    width: 1.5rem;
+    background: var(--slider-color);
+    box-shadow: -31rem 0 0 30rem var(--slider-color);
+    cursor: pointer;
+    
+}
+
+input[type=range]::-moz-range-thumb {
+
+    width: 2rem;
+    border-radius: 10px;
+    height: 2rem;
+    background: var(--slider-color);
+    -moz-box-shadow: 1rem 0 0 30rem var(--slider-color);
+    cursor: pointer;
+}
+
+
+input[type=range]::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
+    margin-left: -2rem;
+    /* margin-right: -6%; */
+    border-radius: 15px;
+    
+
+}
+
+input[type=range]::-moz-range-track {
+    margin-left: -2rem;
+    /* margin-right: -6%; */
+    border-radius: 15px;
+}
+
+.context-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  
+
+
+.form-container{
+    max-width:550px; 
+    
+}
+
+.form-input-mw{
+    max-width: 360px;
+}
