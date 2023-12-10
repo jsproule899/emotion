@@ -21,9 +21,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
-app.use(express.static(__dirname + '/scripts'))
-app.use(express.static(__dirname + '/styles'));
-app.use(express.static(__dirname + '/img'))
+app.use(express.static(__dirname + '/public'))
 app.use(morgan('tiny'));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -35,6 +33,7 @@ app.use(flash());
 app.use('/', require('./routes/rootRouter'));
 app.use('/', require('./routes/loginRouter'));
 app.use('/', require('./routes/signupRouter'));
+app.use('/', require('./routes/moodRouter'));
 
 
 app.get('*', (req, res) => {
