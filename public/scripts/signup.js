@@ -5,12 +5,14 @@ const passInput1 = document.getElementById('passinput1');
 const passInput2 = document.getElementById('passinput2');
 const passInvalid1 = document.getElementById('passinvalid1');
 const passInvalid2 = document.getElementById('passinvalid2');
-const eyeIcon1 = document.getElementById('eyeicon1');
-const eyeIcon2 = document.getElementById('eyeicon2');
+const eyeIcon1 = document.getElementById('eye-icon1');
+const eyeIcon2 = document.getElementById('eye-icon2');
+const eyeIconBox1 = document.getElementById('eye-icon-box1');
+const eyeIconBox2 = document.getElementById('eye-icon-box2');
 const tosCheckbox = document.getElementById('tos');
 const createBtn = document.getElementById('createbtn');
 
-eyeIcon1.addEventListener('click', () => {
+eyeIconBox1.addEventListener('click', () => {
     eyeIcon1.classList.toggle("bi-eye");
     eyeIcon1.classList.toggle("bi-eye-slash");
 
@@ -18,7 +20,7 @@ eyeIcon1.addEventListener('click', () => {
 
 });
 
-eyeIcon2.addEventListener('click', () => {
+eyeIconBox2.addEventListener('click', () => {
     eyeIcon2.classList.toggle("bi-eye");
     eyeIcon2.classList.toggle("bi-eye-slash");
 

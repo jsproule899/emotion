@@ -1,8 +1,6 @@
 const express = require('express');
 const morgan = require('morgan');
-
 const cors = require('cors');
-
 const dotenv = require('dotenv');
 dotenv.config();
 
@@ -31,9 +29,9 @@ app.use(flash());
 
 //routes
 app.use('/', require('./routes/rootRouter'));
-app.use('/', require('./routes/loginRouter'));
-app.use('/', require('./routes/signupRouter'));
-app.use('/', require('./routes/moodRouter'));
+app.use('/login', require('./routes/loginRouter'));
+app.use('/signup', require('./routes/signupRouter'));
+app.use('/mood', require('./routes/moodRouter'));
 
 
 app.get('*', (req, res) => {

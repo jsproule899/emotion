@@ -45,8 +45,8 @@ class dbService {
     async createAccount(username, email, password) {
         try {
             const res = await new Promise((resolve, reject) => {
-                const query = `INSERT INTO user (user_id, username, email, password) VALUES (NULL, ${username}, ${email}, ${password});`
-                connection.query(query, (err, result) => {
+                const query = 'INSERT INTO user (user_id, username, email, password) VALUES (NULL, ?, ?, ?);'
+                connection.query(query, [username, email, password], (err, result) => {
                     if (err) reject(new Error(err.message));
                     resolve(result);
                 });
@@ -61,26 +61,66 @@ class dbService {
     }
 
     checkEmail(email) {
-        const query = `SELECT * FROM user WHERE email=${email};`;
-        connection.query(query, (err, result) => {
+        const query = 'SELECT * FROM user WHERE email = ?;';
+        connection.query(query, [email], (err, result) => {
             return (!result[0]) ? true : false;
 
         });
     }
 
-    async hashByEmail(email) {
+    async findByEmail(email) {
+        try {
+            const res = await new Promise((resolve, reject) => {
+                const query = 'SELECT * FROM user WHERE email = ? ';
+                connection.query(query, [email], (err, result) => {
+                    if (err) reject(new Error(err.message));
+                    if (!result[0]) reject(new Error("Account does not exist"));
+                    resolve(result[0]);
+                    
+                });
+            });
+            
+            return res;
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
+    async passwordById(id) {
         try {
             
             const res = await new Promise((resolve, reject) => {
-                const query = `SELECT * FROM user WHERE email="${email}"`;
-                connection.query(query, (err, result) => {
+                const query = 'SELECT password FROM user WHERE user_id = ?';
+                connection.query(query, [id], (err, result) => {
+                   
+                    if (err) reject(new Error(err.message));
+                    if (!result[0]) reject(new Error("Password does not exist"));
                     
+                    resolve( result[0].password);
+                    
+                });
+            });
+           return res;
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async hashByEmail(email) {
+
+        try {
+
+            const res = await new Promise((resolve, reject) => {
+                const query = 'SELECT * FROM user WHERE email = ?';
+                connection.query(query, [email], (err, result) => {
+
                     if (err) reject(new Error(err.message));
                     if (!result[0]) reject(new Error("Account does not exist"));
                     if (result[0]) resolve(result[0].password.toString('binary'));
+                    
                 });
             });
+            
             return res
         } catch (error) {
 

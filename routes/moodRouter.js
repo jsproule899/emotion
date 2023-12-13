@@ -4,8 +4,9 @@ const fs = require("fs");
 //connect db
 const dbService = require('../dbservice.js');
 
+
 const data = JSON.parse(fs.readFileSync('moods.json'));
-router.get('/viewMoods', (req, res) => {
+router.get('/view', (req, res) => {
     res.status(200);
     const db = dbService.getDbServiceInstance();
 
@@ -13,7 +14,8 @@ router.get('/viewMoods', (req, res) => {
 });
 
 
-router.get('/addMood', async (req, res) => {
+router.route('/add')
+.get(async (req, res) => {
     res.status(200);
     const db = dbService.getDbServiceInstance();
 
@@ -26,6 +28,9 @@ router.get('/addMood', async (req, res) => {
         .then(emotions => { res.render('addMood', { emotions, contextType }) })
         .catch(err => console.log(err));
 
+})
+.post(async (req, res) => {
+    
 });
 
 
