@@ -10,7 +10,7 @@ const eyeIcon2 = document.getElementById('eye-icon2');
 const eyeIconBox1 = document.getElementById('eye-icon-box1');
 const eyeIconBox2 = document.getElementById('eye-icon-box2');
 const tosCheckbox = document.getElementById('tos');
-const createBtn = document.getElementById('createbtn');
+const createBtn = document.getElementById('create-btn');
 
 eyeIconBox1.addEventListener('click', () => {
     eyeIcon1.classList.toggle("bi-eye");
@@ -32,11 +32,11 @@ eyeIconBox2.addEventListener('click', () => {
 
 
 tosCheckbox.addEventListener('change', () => validateForm());
-usernameInput.addEventListener("blur", () => { validateForm() });
-emailInput.addEventListener("blur", () => { validateForm() });
-passInput1.addEventListener("input", () => { validateForm() });
-passInput1.addEventListener("blur", () => { validateForm() });
-passInput2.addEventListener("blur", () => { validateForm(); });
+usernameInput.addEventListener("blur", () => validateForm() );
+emailInput.addEventListener("blur", () =>  validateForm());
+passInput1.addEventListener("input", () =>  validateForm());
+passInput1.addEventListener("blur", () =>  validateForm());
+passInput2.addEventListener("blur", () =>  validateForm());
 
 function validateUsername() {
     var validUsername = /^[a-zA-Z0-9]{6,16}$/g;

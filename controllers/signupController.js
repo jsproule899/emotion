@@ -1,4 +1,4 @@
-const dbService = require('../dbservice.js');
+const {dbService} = require('../dbService.js');
 const bcrypt = require('bcrypt');
 
 const handleSignup  = async (req, res) => {
@@ -6,6 +6,9 @@ const handleSignup  = async (req, res) => {
     const db = dbService.getDbServiceInstance();
 
         const { username, email, password } = req.body;
+
+        if(!db.checkEmail(email)) return res.render('signup.ejs', {errMessage: 'Email already in use, please sign in or choose another email'});
+        
 
         try {
             bcrypt.hash(password, 10, (err, hash) => {

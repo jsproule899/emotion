@@ -1,7 +1,7 @@
 const mysql = require('mysql');
-const dotenv = require('dotenv');
+require('dotenv').config();
 let instance = null;
-dotenv.config();
+
 
 const connection = mysql.createConnection({
     host: process.env.HOST,
@@ -15,31 +15,12 @@ connection.connect((err) => {
     if (err)
         return console.log(err.message);
 
-    console.log('db' + connection.state);
+    console.log('db ' + connection.state);
 });
 
 class dbService {
     static getDbServiceInstance() {
         return instance ? instance : new dbService();
-    }
-
-    async getAllData() {
-        try {
-            const res = await new Promise((resolve, reject) => {
-                const query = "SELECT * FROM mood;";
-
-                connection.query(query, (err, result) => {
-                    if (err) reject(new Error(err.message));
-                    resolve(result);
-                });
-            });
-
-            console.log(res);
-            return res;
-
-        } catch (error) {
-            console.log(error);
-        }
     }
 
     async createAccount(username, email, password) {
@@ -68,6 +49,7 @@ class dbService {
         });
     }
 
+
     async findByEmail(email) {
         try {
             const res = await new Promise((resolve, reject) => {
@@ -76,10 +58,10 @@ class dbService {
                     if (err) reject(new Error(err.message));
                     if (!result[0]) reject(new Error("Account does not exist"));
                     resolve(result[0]);
-                    
+
                 });
             });
-            
+
             return res;
         } catch (error) {
             console.log(error);
@@ -88,19 +70,19 @@ class dbService {
 
     async passwordById(id) {
         try {
-            
+
             const res = await new Promise((resolve, reject) => {
                 const query = 'SELECT password FROM user WHERE user_id = ?';
                 connection.query(query, [id], (err, result) => {
-                   
+
                     if (err) reject(new Error(err.message));
                     if (!result[0]) reject(new Error("Password does not exist"));
-                    
-                    resolve( result[0].password);
-                    
+
+                    resolve(result[0].password);
+
                 });
             });
-           return res;
+            return res;
         } catch (error) {
             throw error
         }
@@ -116,11 +98,11 @@ class dbService {
 
                     if (err) reject(new Error(err.message));
                     if (!result[0]) reject(new Error("Account does not exist"));
-                    if (result[0]) resolve(result[0].password.toString('binary'));
-                    
+                    if (result[0]) resolve(result[0]);
+
                 });
             });
-            
+
             return res
         } catch (error) {
 
@@ -161,5 +143,6 @@ class dbService {
     }
 }
 
-module.exports = dbService;
+
+module.exports = {dbService, connection};
 

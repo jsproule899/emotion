@@ -1,9 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const signupController = require('../controllers/signupController')
-//connect db
-const dbService = require('../dbservice.js');
-
 
 
 router.route('/')

@@ -3,10 +3,10 @@ const router = express.Router();
 const authController = require('../controllers/authController')
 
 router.route('/').get( (req, res) => {
+    
     res.status(200);
-    const expressFlash = req.flash('errAccMessage')
-    res.render('login.ejs', {expressFlash});
-}).post(authController.handleLogin);
+    res.render('login.ejs');
+}).post(authController.handleLogin); 
 
 // .put()
 // .delete();

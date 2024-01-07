@@ -15,7 +15,8 @@
 <body>
     <% const timestamp=new Date().toUTCString();%>
         <%- include('partials/navbar') %>
-            <div class="container pb-3">
+        <script> document.getElementById("nav-add").classList.add("active")</script>
+            <div class="container pb-3" style="min-height: 100lvh;">
                 <div class="container bg-body-tertiary my-4 mb-5 py-4 rounded-2 w-100 shadow"
                     style="max-width: 1000px;">
                     <h2 class="text-center fw-semibold fs-5 text-decoration-underline"><i
@@ -24,12 +25,12 @@
                     </h2>
                     <h1 class="text-center fw-bold fs-1">How are you feeling?</h1>
 
-                    <form class="pt-3 d-flex justify-content-center" action="/Mood" method="post">
+                    <form class="pt-3 d-flex justify-content-center" action="/mood/add" method="post">
                         <div class="col-10">
                             <%emotions.forEach(emotions=>{%>
                                 <div class="row">
                                     <div class="col-12 mx-auto text-center">
-                                        <label for="enjoyment" class="form-label fw-medium fs-4 mb-0"><%-
+                                        <label class="form-label fw-medium fs-4 mb-0"><%-
                                                 emotions.emotion_name.substring(0,1).toUpperCase()
                                                 +emotions.emotion_name.substring(1, emotions.emotion_name.length)
                                                 %></label>
@@ -42,10 +43,10 @@
                                         <div class="col-10 mx-0 px-3 d-flex align-items-center">
                                             <input type="range" class="custom-range"
                                                 style="--slider-color: <%- emotions.emotion_colour%>" min="0" max="10"
-                                                id=<%- emotions.emotion_name %>>
+                                                id=<%- emotions.emotion_name %> name="<%- emotions.emotion_name %>">
                                         </div>
                                         <div class="col-1 m-0 p-0 d-flex align-items-center text-center">
-                                            <output for="enjoyment" id=<%=emotions.emotion_name + "-value" %>
+                                            <output id=<%=emotions.emotion_name + "-value" %>
                                                 class="slider-value"
                                                 style="--slider-color: <%- emotions.emotion_colour%>">5</output>
                                         </div>
@@ -69,34 +70,32 @@
                                         <div class="col-10 my-2 mx-0 p-0 d-flex justify-content-center ">
                                             <ul class="list-group list-group-horizontal mb-3 overflow-x-scroll context-scroll"
                                                 id="context-list">
-                                                <%contextType.forEach(function(contextType){%>
+                                                <%contextType.forEach(contextType=>{%>
                                                     <div class="text-center ">
                                                         <h6 class="fw-lighter m-0" style="font-size: 0.75rem;">
                                                             <%=contextType.context_type_name %>
                                                         </h6>
 
-                                                        <li type="checkbox"
-                                                            class=" list-group-item border border-3 rounded mx-1 my-auto "
-                                                            id="<%=contextType.context_type_name %>">
+                                                        <li class="list-group-item border border-3 rounded mx-1 my-auto" id="<%=contextType.context_type_name %>-box">
+                                                            <input type="checkbox"
+                                                                name="<%=contextType.context_type_name %>" id="<%=contextType.context_type_name %>" style="display: none;" >
                                                             <i
                                                                 class="bi <%=contextType.context_icon%> fw-medium fs-2"></i>
+                                                            </input>
+
                                                         </li>
                                                     </div>
 
                                                     <script>
-                                                        const <%=contextType.context_type_name %> =
-                                                        document.getElementById('<%=contextType.context_type_name %>')
-                                                            <%=contextType.context_type_name %>.addEventListener('click', () => {
-                                                                <%=contextType.context_type_name %>.checked = !<%= contextType.context_type_name %>.checked;
-                                                    <%=contextType.context_type_name %>.classList.toggle('border-success-subtle');
-                                                    <%=contextType.context_type_name %>.classList.toggle('text-success');
+                                                        const <%=contextType.context_type_name %> = document.getElementById('<%=contextType.context_type_name %>')
+                                                        const <%=contextType.context_type_name %>_box = document.getElementById('<%=contextType.context_type_name %>-box')
+                                                            <%=contextType.context_type_name %>_box.addEventListener('click', () => {
+                                                                 <%=contextType.context_type_name %>.checked = !<%= contextType.context_type_name %>.checked;
+                                                    <%=contextType.context_type_name %>_box.classList.toggle('border-success-subtle');
+                                                    <%=contextType.context_type_name %>_box.classList.toggle('text-success');
 
-                                                                if (<%= contextType.context_type_name %>.checked) {
-                                                            console.log(<%=contextType.context_type_name %>.id + " is checked");
-                                                        } else {
-                                                            console.log(<%=contextType.context_type_name %>.id + " is not checked");
-                                                        }
-                                                    });
+
+                                                            });
                                                     </script>
 
                                                     <% }) %>
@@ -120,12 +119,12 @@
 
                                         <div class="row d-flex justify-content-center mx-auto">
                                             <label for=""></label>
-                                            <input type="text" class="form-control" id="conext-comment" maxlength="100"
-                                                placeholder="Add a comment...">
+                                            <input type="text" class="form-control" id="context-comment" maxlength="100"
+                                                placeholder="Add a comment..." name="comment">
                                         </div>
                                     </div>
                                     <div class="row  justify-content-center ">
-                                        <button type="button" class="btn btn-primary col-8 my-3" id="addbtn">Add
+                                        <button type="submit" class="btn btn-primary col-8 my-3" id="addbtn">Add
                                             mood</button>
                                     </div>
                     </form>

@@ -1,27 +1,27 @@
 <link rel="stylesheet" href="../styles/mystyles.css">
 
-<nav class="navbar navbar-expand-lg sticky-top bg-body-tertiary shadow-sm ">
+<nav class="navbar navbar-expand-md sticky-top bg-body-tertiary shadow-sm align-text-center ">
   <div class="container-fluid ">
-    <a class="navbar-brand" href="/"><img src="../img/emotion.png" class="logo" alt="Logo" width="35" height="35"
-        class="d-inline-block align-text-center"> Emotion</a>
+    <a class="navbar-brand align-bottom" href="/"><img src="../img/emotion.png" class="logo" alt="Logo" width="35" height="35"
+        class="d-inline-block align-text-center"> <div class="d-inline-block align-middle">MindYourSelf</div></a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
       aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <div class="collapse navbar-collapse justify-text-center" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto  mb-lg-0 text-center justify-content-center">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/mood/add">Add Mood</a>
+          <a class="nav-link" aria-current="page" href="/mood/add" id="nav-add">Add Mood</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/mood/view">View Moods</a>
+          <a class="nav-link" href="/mood/view" id="nav-view">View Moods</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             Dropdown
           </a>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">Action</a></li>
+          <ul class="dropdown-menu text-center">
+            <li><a class="dropdown-item " href="#">Action</a></li>
             <li><a class="dropdown-item" href="#">Another action</a></li>
             <li>
               <hr class="dropdown-divider">
@@ -30,8 +30,8 @@
           </ul>
         </li>
       </ul>
-      <div class="d-flex flex-row me-2 mb-1">
-        <div class="d-flex flex-row align-items-center">
+      <div class="d-flex flex-row mx-2 mb-1  nav-buttons">
+        <div class="d-flex flex-row align-items-center ">
           <i class="bi bi-moon-fill mx-1 align-self-center" style="font-size: 1rem;"></i>
           <div class="form-check form-switch d-flex align-items-center mx-1 px-0 ">
             <input class="form-check-input mx-0 my-0" type="checkbox" role="switch" id="dark-light-mode" checked="true"
@@ -42,8 +42,13 @@
         <div class="d-flex mx-3 align-self-center" style="height: 2rem;">
           <div class="vr"></div>
         </div>
-        <a class="btn btn-outline-primary me-2" href="/login">Log in</a>
-        <a class="btn btn-primary me-2" href="/signup">Sign up</a>
+        
+       <% if(locals.user) { %> 
+          <a class="btn btn-outline-primary me-2 nav-btn" href="/logout">Log out</a>
+       <% } else{ %>
+        <a class="btn btn-outline-primary me-2 nav-btn" href="/login">Log in</a>
+        <a class="btn btn-primary me-2 nav-btn" href="/signup">Sign up</a>
+        <% } %>
       </div>
     </div>
     <Script src="../scripts/nav.js"></Script>
