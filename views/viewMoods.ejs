@@ -10,12 +10,14 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../styles/mystyles.css">
+    <Script src="../scripts/theme.js"></Script>
+
 </head>
 
 <body>
     <%- include('partials/navbar') %>
         <script> document.getElementById("nav-view").classList.add("active")</script>
-        <div class=" container mt-3 mb-5 pb-3 text-center" style="min-height: 100lvh;">
+        <div class=" container-fluid mt-3 mb-5 pb-3 mx-auto" style="min-height: 100lvh;">
 
             <% if(typeof errMessage !="undefined" && errMessage) { %>
                 <div class="mt-5 mb-3">
@@ -29,15 +31,134 @@
 
                 <% } %>
 
-                    <div class="row  ">
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content rounded-4 shadow">
+                                <button type="button" class="btn-close m-2 ms-auto" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+
+                                <div class="modal-body text-center fs-4 py-0">
+                                    <span class="d-block text-danger" style=" font-size: 4rem;"><i
+                                            class="bi bi-exclamation-circle"></i></span>
+                                    <p class="mb-1">Do you really want to delete this Mood?</p>
+                                    <p>This cannot be undone.</p>
+                                </div>
+                                <div class="modal-footer flex-column w-100  border-top-0">
+                                    <form action="" method="POST" id="form-delete-mood">
+                                        <button type="button" class="btn btn-secondary mx-2"
+                                            data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-danger mx-2" value="submit">Delete
+                                            Mood</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Edit Modal -->
+                    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content rounded-4 shadow">
+
+                                <button type="button" class="btn-close m-2 ms-auto" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+
+                                <div class="modal-body text-center fs-4 py-0">
+                                    <form action="" method="POST" id="form-update-mood">
+                                        <div class="row my-2">
+                                            <div
+                                                class="col-1 my-2 p-0 d-flex align-items-center justify-content-center">
+                                                <i class="col-1 bi bi-arrow-left-short fs-5 cursor-p"
+                                                    id="context-scroll-left"></i>
+                                            </div>
+                                            <div class="col-10 my-2 mx-0 p-0 d-flex justify-content-center ">
+                                                <ul class="list-group list-group-horizontal mb-3 overflow-x-scroll context-scroll"
+                                                    id="context-list">
+                                                    <%contextType.forEach(contextType=>{%>
+                                                        <div class="text-center ">
+                                                            <h6 class="fw-lighter m-0" style="font-size: 0.75rem;">
+                                                                <%=contextType.context_type_name %>
+                                                            </h6>
+
+                                                            <li class="list-group-item border border-3 rounded mx-1 my-auto"
+                                                                id="<%=contextType.context_type_name %>-box">
+                                                                <input type="checkbox"
+                                                                    name="<%=contextType.context_type_name %>"
+                                                                    id="<%=contextType.context_type_name %>"
+                                                                    style="display: none;">
+                                                                <i
+                                                                    class="bi <%=contextType.context_icon%> fw-medium fs-2"></i>
+                                                                </input>
+
+                                                            </li>
+                                                        </div>
+
+                                                        <script>
+                                                            const <%=contextType.context_type_name %> = document.getElementById('<%=contextType.context_type_name %>')
+                                                            const <%=contextType.context_type_name%>_box = document.getElementById('<%=contextType.context_type_name %>-box')
+                                                                <%=contextType.context_type_name %>_box.addEventListener('click', () => {
+                                                         <%=contextType.context_type_name %>.checked = !<%= contextType.context_type_name %>.checked;
+                                            <%=contextType.context_type_name %>_box.classList.toggle('context-box-checked');
+
+
+
+                                                                });
+                                                        </script>
+
+                                                        <% }) %>
+                                                </ul>
+                                            </div>
+                                            <div
+                                                class="col-1 my-2 p-0 d-flex align-items-center justify-content-center">
+                                                <i class="col-1 bi bi-arrow-right-short fs-5 cursor-p"
+                                                    id="context-scroll-right"></i>
+                                            </div>
+                                            <script>
+                                                const contextScrollRight = document.getElementById('context-scroll-right');
+                                                const contextScrollLeft = document.getElementById('context-scroll-left');
+                                                const contextList = document.getElementById('context-list');
+                                                contextScrollRight.addEventListener('click', () => {
+                                                    contextList.scroll(500, "smooth");
+                                                })
+                                                contextScrollLeft.addEventListener('click', () => {
+                                                    contextList.scroll(-500, "smooth");
+                                                })
+
+                                            </script>
+
+                                            <div class="">
+
+                                                <textarea type="text" class="form-control text-center  d-inline"
+                                                    name="contextComment" id="context-comment"></textarea>
+                                                <div class="modal-footer w-100 justify-content-center border-top-0">
+                                                    <button class="btn btn-outline-primary mt-2 mx-2 " type="button"
+                                                        data-bs-dismiss="modal">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary mt-2 mx-2">Save
+                                                        Changes</button>
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row row-cols-auto justify-content-center mx-auto">
 
                         <% if(data) { %>
                             <% for(let mood of data) { %>
 
-                                <div class="col-md-auto  mb-3 ">
+                                <div class="col mb-3 text-center">
 
-                                    <div class="col card h-100" style="min-width: 300px;">
-                                        <div class="card-header d-flex justify-content-between ">
+                                    <div class="card mood-card h-100 shadow">
+                                        <div class="card-header  d-flex justify-content-between ">
                                             <div><i class="bi bi-calendar-event mx-1"></i>
                                                 <%=mood.mood_timestamp.toString().substring(0,21) %>
                                             </div>
@@ -47,34 +168,37 @@
                                                     data-bs-toggle="dropdown" aria-expanded="false">
                                                 </i>
                                                 <ul class="dropdown-menu" style="min-width: 3rem;">
-                                                    
+
+                                                    <!-- Button trigger edit modal -->
                                                     <li><button class="dropdown-item d-flex justify-content-between"
-                                                            type="button" onclick="editMood(<%=mood.mood_id%>)">Edit<i
+                                                            data-bs-toggle="modal" data-bs-target="#editModal"
+                                                            type="button"
+                                                            onclick="editMood(<%=mood.mood_id%>, '<%=mood.context_comment%>')">Edit<i
                                                                 class="bi bi-pencil-square mx-1"></i></button>
                                                     </li>
-                                                    
-                                                    <form action="/mood/delete/<%=mood.mood_id%>" method="POST">
-                                                        <li><button class="dropdown-item d-flex justify-content-between"
-                                                                type="submit">Remove<i
-                                                                    class="bi bi-trash3 mx-1"></i></button>
-                                                        </li>
-                                                    </form>
+
+                                                    <!-- Button trigger delete modal -->
+                                                    <li><button type="button"
+                                                            class="dropdown-item d-flex justify-content-between"
+                                                            data-bs-toggle="modal" data-bs-target="#deleteModal"
+                                                            onclick="deleteMood(<%=mood.mood_id%>)">Remove<i
+                                                                class="bi bi-trash3 mx-1"></i></button>
+                                                    </li>
+
 
                                                 </ul>
                                             </div>
                                         </div>
 
-                                        <div class="card-body">
+                                        <div class="card-body bg-body-tertiary">
                                             <ul class="list-group mb-1 "></ul>
                                             <% for ( let emotion of mood.emotion) { %>
-
                                                 <li class="list-group-item py-0 " style="border-style:none;">
                                                     <%= emotion.emotion_name.substring(0,1).toUpperCase()+emotion.emotion_name.substring(1)
                                                         %>
                                                         <div
                                                             class="row d-flex align-items-center justify-content-center ">
-                                                            <div
-                                                                class="col-1 m-0 p-0 fw-medium  d-flex justify-content-end justify-text-center">
+                                                            <div class="col-1 m-0 p-0 fw-medium  d-flex ">
                                                                 <i class="bi <%=emotion.emotion_icon%> "></i>
                                                             </div>
 
@@ -91,15 +215,14 @@
                                                                 </div>
                                                             </div>
                                                 </li>
-
                                                 <% } %>
 
                                                     </ul>
-                                                    <div class="container d-flex justify-content-center">
-                                                        <div class=" mt-2 p-0 ">
-                                                            <ul class="list-group list-group-horizontal mb-3 p-0 row row-cols-auto justify-content-evenly"
+                                                    <div class="d-flex justify-content-center ">
+                                                        <div class=" mt-2 p-0 flex-grow-1">
+                                                            <ul class="list-group list-group-horizontal mb-3 p-0 row row-cols-auto g-2 justify-content-center"
                                                                 id="context-list">
-                                                                <% if(mood.context) for ( let context of mood.context) {
+                                                                <% if(mood.context) for ( let context of mood.context){
                                                                     %>
                                                                     <div class="col">
                                                                         <h6 class="fw-lighter m-0"
@@ -107,42 +230,30 @@
                                                                             <%=context.context_type_name %>
                                                                         </h6>
 
-                                                                        <li class=" list-group-item border border-3 rounded justify-content-between   "
-                                                                            id="<%=context.context_type_name %>">
+                                                                        <li class="list-group-item border border-3 rounded justify-content-between"
+                                                                            id="<%=context.context_type_name %>-<%=mood.mood_id%>">
                                                                             <i
                                                                                 class="bi <%=context.context_icon%> fw-medium fs-4"></i>
                                                                         </li>
                                                                     </div>
 
                                                                     <%}%>
-
-                                                                    
                                                             </ul>
-                                                            <form action="/mood/update/<%=mood.mood_id%>" method="POST">
-                                                                <input type="text" class="form-control text-center visually-hidden d-inline"
-                                                                    id="mood-context-input-<%=mood.mood_id%>"
-                                                                    value="<%=mood.context_comment %>" name="contextComment">
-                                                                    
-                                                                </input>
-                                                                <% if(mood.context_comment) { %>
-                                                                <div class="form-control" id="mood-context-<%=mood.mood_id%>">
+
+                                                            <% if(mood.context_comment) { %>
+                                                                <div class="form-control " style="width: 100%;"
+                                                                    id="mood-context-<%=mood.mood_id%>">
                                                                     <%=mood.context_comment %>
                                                                 </div>
                                                                 <% } %>
-                                                                <button type="submit"
-                                                                    class="btn btn-primary mt-2 visually-hidden"
-                                                                    id="save-btn-<%=mood.mood_id%>">Save Changes</button>
-                                                            </form>
-
-
                                                         </div>
                                                     </div>
                                         </div>
 
 
                                         <div class="card-footer">
-                                            <% const currentDate=Date.now(); const moodDate=new Date
-                                                (mood.context_timestamp); let lastUpdate=currentDate - moodDate ; %>
+                                            <% const currentDate=Date.now(); const moodDate=new
+                                                Date(mood.context_timestamp); let lastUpdate=currentDate - moodDate; %>
 
                                                 <small class="text-body-secondary">Last updated <% var
                                                         diffDays=Math.floor(lastUpdate / 86400000); var
@@ -150,20 +261,24 @@
                                                         diffMins=Math.floor(((lastUpdate % 86400000) % 3600000) /
                                                         60000); %>
 
-                                                        <% if(diffDays>1) { %> <%= diffDays + " days," %>
-                                                                <% } else if(diffDays>0) {%><%= diffDays + " day," %>
+                                                        <% if(diffDays>1) { %> <%= diffDays + " days" %>
+                                                                <% } else if(diffDays>0) {%><%= diffDays + " day" %>
                                                                         <% } %>
                                                                             <% if(diffHrs>1) { %> <%= diffHrs
                                                                                     + " hours " %>
-                                                                                    <% } else if(diffHrs>0) {%><%=
-                                                                                            diffHrs + " hour," %>
-                                                                                            <% }if(diffMins>1 &&
-                                                                                                !diffDays>0) { %>
+                                                                                    <% } else if(diffHrs>0)
+                                                                                        {%><%= diffHrs + " hour" %>
+                                                                                            <% }if(diffMins>
+                                                                                                1 &&
+                                                                                                !diffDays>0)
+                                                                                                { %>
                                                                                                 <%=diffMins + " minutes"
                                                                                                     %>
                                                                                                     <% }else
-                                                                                                        if(diffMins>0 &&
-                                                                                                        !diffDays>0) {%>
+                                                                                                        if(diffMins>
+                                                                                                        0 &&
+                                                                                                        !diffDays>0)
+                                                                                                        {%>
                                                                                                         <%= diffMins
                                                                                                             + " minute"
                                                                                                             %>
@@ -171,9 +286,10 @@
                                                                                                                 (lastUpdate
                                                                                                                 / 1000)
                                                                                                                 <60 )
-                                                                                                                {%> just
-                                                                                                                now <%
-                                                                                                                    }else
+                                                                                                                {%>
+                                                                                                                just
+                                                                                                                now
+                                                                                                                <% }else
                                                                                                                     { %>
                                                                                                                     ago
                                                                                                                     <%}%>
@@ -185,7 +301,8 @@
                                 </div>
                                 <% } %>
                                     <% } else { %>
-                                        <h1 class="text-center">No moods to show... <a href="/mood/add"> Add mood?</a>
+                                        <h1 class="text-center">No moods to show... <a href="/mood/add"> Add
+                                                mood?</a>
                                         </h1>
                                         <% } %>
                     </div>
@@ -197,16 +314,29 @@
         <%- include('partials/footer') %>
 
             <script>
-                function editMood(id) {
-                    if(document.getElementById('mood-context-' + id))document.getElementById('mood-context-' + id).classList.toggle('visually-hidden');
-                    document.getElementById('mood-context-input-' + id).classList.toggle('visually-hidden');
-                    document.getElementById('save-btn-' + id).classList.toggle('visually-hidden');
+                    function deleteMood(id) {
+                        const deleteMoodForm = document.getElementById('form-delete-mood');
+                        deleteMoodForm.action = "/mood/delete/" + id;
+                    }
+
+
+                function editMood(id, context) {
+
+                    const contextComment = document.getElementById('context-comment');
+                    const updateMoodForm = document.getElementById('form-update-mood');
+                    updateMoodForm.action = "/mood/update/" + id;
+                    contextComment.innerHTML = context;
+
+
+                    ;
                 }
             </script>
-
-            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                 crossorigin="anonymous"></script>
+
+
+
 
 </body>
 

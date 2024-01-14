@@ -2,27 +2,14 @@ const express = require('express');
 const router = express.Router();
 const moodController = require('../controllers/moodController');
 
-
-//connect db
-const { dbService } = require('../dbService.js');
-
-
-
-
-
-// router.get('/view', (req, res) => {
-//     res.status(200);
-//     res.render('viewMoods', moodController.getAllMoods)
-// });
-
 router.get('/view', async (req, res) => {
     if (!req.user) return res.redirect('/login')
     const user = req.user;
 
     res.status(200);
-    const db = dbService.getDbServiceInstance();
     
-    const contextType = await db.getContextType()
+    
+    const contextType = await new moodController().getContextType()
     .then(contextType => { return contextType })
     .catch(err => console.log(err));
 
@@ -35,7 +22,7 @@ router.get('/view', async (req, res) => {
         })
         .catch(err => {
             console.log(err)
-            db.getContextType()
+            new moodController().getContextType()
             .then(contextType => {  
                 res.render('viewMoods',
                 { errMessage: err.message, data, user, contextType });
@@ -52,14 +39,12 @@ router.route('/add')
         if (!req.user) return res.redirect('/login')
         const user = req.user;
         res.status(200);
-        const db = dbService.getDbServiceInstance();
-
-
-        const contextType = await db.getContextType()
+        
+        const contextType = await new moodController().getContextType()
             .then(contextType => { return contextType })
             .catch(err => console.log(err));
 
-        db.getEmotions()
+           new moodController().getEmotions()
             .then(emotions => { res.render('addMood', { emotions, contextType, user }) })
             .catch(err => console.log(err));
 
@@ -94,8 +79,8 @@ router.route('/delete/:id')
     router.route('/update/:id')
     .post(async (req, res) => {
 
-        const id = req.params.id;
-        new moodController().updateMood(id, req)
+        const id = req.params.id;        
+        new moodController().updateMood(id, req.body)
             .then( setTimeout(()=>
                 res.redirect('/mood/view'), 1000))
             .catch(err => {

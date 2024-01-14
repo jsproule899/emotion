@@ -5,9 +5,6 @@ const morgan = require('morgan');
 const cors = require('cors');
 const verifyJWT = require('./middleware/verifyJWT')
 const cookieParser = require('cookie-parser');
-const { handleRefreshToken } = require('./controllers/refreshTokenController');
-
-
 
 //cross origin resource sharing
 app.use(cors());
@@ -30,19 +27,13 @@ app.use(express.urlencoded({ extended: true }));
 //built-in middleware for cookies
 app.use(cookieParser());
 
-
-
-
 //routes
-
 app.use('/login', require('./routes/loginRouter'));
 app.use('/signup', require('./routes/signupRouter'));
-app.use('/refresh', require('./routes/refreshRouter'))
 app.use('/logout', require('./routes/logoutRouter'))
 
 //protected routes
 app.use(verifyJWT); 
-// app.use(handleRefreshToken);  
 app.use('/', require('./routes/rootRouter'))
 app.use('/mood', require('./routes/moodRouter'));
 
