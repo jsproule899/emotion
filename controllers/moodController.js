@@ -3,10 +3,8 @@ const Mood = require('../models/Mood.js');
 require('dotenv').config();
 
 
-class moodController {
 
-
-    async getAllMoods() {
+    async function getAllMoods() {
         try {
             const res = await new Promise((resolve, reject) => {
                 const query = `SELECT * FROM mood JOIN mood_emotion ON mood.mood_id=mood_emotion.mood_id 
@@ -29,7 +27,7 @@ class moodController {
         }
     }
 
-    async getMoodsByUser(user) {
+    async function getMoodsByUser(user) {
 
         try {
             var moodQuery = `SELECT * FROM mood JOIN context ON context.context_id = mood.context_id WHERE user_id = ?`
@@ -81,7 +79,7 @@ class moodController {
     }
 
 
-    async createMood(user, req) {
+    async function createMood(user, req) {
         const { enjoyment, sadness, anger, contempt, disgust, fear, surprise, Romance, Family, Work, Holiday, Lonely, Exercise, Friends, Shopping, comment, timestamp } = req.body;
         const newMood = Mood.getMoodInstance(user.user_id, timestamp, comment, enjoyment, sadness, anger, contempt, disgust, fear, surprise, Romance, Family, Work, Holiday, Lonely, Exercise, Friends, Shopping);
 
@@ -168,7 +166,7 @@ class moodController {
     }
 
 
-    async updateMood(id, reqBody) {
+    async function updateMood(id, reqBody) {
         const { contextComment } = reqBody;
         const { Romance, Family, Work, Holiday, Lonely, Exercise, Friends, Shopping} = reqBody;
         const newContext = { Romance, Family, Work, Holiday, Lonely, Exercise, Friends, Shopping};
@@ -224,7 +222,7 @@ class moodController {
         });
     }
 
-    async deleteMood(id) {
+    async function deleteMood(id) {
 
         await new Promise((resolve, reject) => {
 
@@ -269,7 +267,7 @@ class moodController {
     }
 
 
-    async getEmotions() {
+    const getEmotions = async () => {
         try {
             const res = await new Promise((resolve, reject) => {
                 const query = `SELECT * FROM emotion;`;
@@ -285,7 +283,7 @@ class moodController {
     }
 
 
-    async getContextType() {
+    const getContextType = async ()=> {
         try {
             const res = await new Promise((resolve, reject) => {
                 const query = `SELECT * FROM context_type;`;
@@ -299,7 +297,15 @@ class moodController {
             throw error;
         }
     }
-}
 
 
-module.exports = moodController;
+
+module.exports = {
+    getMoodsByUser,
+    createMood,
+    getContextType,
+    getEmotions,
+    updateMood,
+    deleteMood,
+    getAllMoods 
+};

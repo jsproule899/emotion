@@ -9,12 +9,12 @@ router.get('/view', async (req, res) => {
     res.status(200);
     
     
-    const contextType = await new moodController().getContextType()
+    const contextType = await moodController.getContextType()
     .then(contextType => { return contextType })
     .catch(err => console.log(err));
 
 
-    new moodController().getMoodsByUser(user)
+    moodController.getMoodsByUser(user)
         .then(data => {
             //console.log(data)
             res.render('viewMoods',
@@ -22,7 +22,7 @@ router.get('/view', async (req, res) => {
         })
         .catch(err => {
             console.log(err)
-            new moodController().getContextType()
+            moodController.getContextType()
             .then(contextType => {  
                 res.render('viewMoods',
                 { errMessage: err.message, data, user, contextType });
@@ -40,18 +40,18 @@ router.route('/add')
         const user = req.user;
         res.status(200);
         
-        const contextType = await new moodController().getContextType()
+        const contextType = await moodController.getContextType()
             .then(contextType => { return contextType })
             .catch(err => console.log(err));
 
-           new moodController().getEmotions()
+           moodController.getEmotions()
             .then(emotions => { res.render('addMood', { emotions, contextType, user }) })
             .catch(err => console.log(err));
 
     })
     .post(async (req, res) => {
         
-        new moodController().createMood(req.user, req)
+        moodController.createMood(req.user, req)
         .then(setTimeout(()=>
             res.redirect('/mood/view'), 1000))
         .catch(err => {
@@ -65,7 +65,7 @@ router.route('/delete/:id')
     .post(async (req, res) => {
 
         const id = req.params.id;
-        new moodController().deleteMood(id)
+         moodController.deleteMood(id)
             .then( setTimeout(()=>
                 res.redirect('/mood/view'), 1000))
             .catch(err => {
@@ -80,7 +80,7 @@ router.route('/delete/:id')
     .post(async (req, res) => {
 
         const id = req.params.id;        
-        new moodController().updateMood(id, req.body)
+        moodController.updateMood(id, req.body)
             .then( setTimeout(()=>
                 res.redirect('/mood/view'), 1000))
             .catch(err => {

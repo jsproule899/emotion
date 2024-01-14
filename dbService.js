@@ -1,7 +1,5 @@
 const mysql = require('mysql');
 require('dotenv').config();
-let instance = null;
-
 
 const dbPool = mysql.createPool({
     host: process.env.HOST,
@@ -10,7 +8,6 @@ const dbPool = mysql.createPool({
     database: process.env.DATABASE,
     port: process.env.DB_PORT
 });
-
 
 
 module.exports =  dbPool ;
