@@ -1,4 +1,4 @@
-const { dbPool } = require('../dbService.js');
+const dbPool = require('../dbService.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
@@ -20,7 +20,7 @@ const handleSignup = (req, res) => {
 
                             const accessToken = jwt.sign(
                                 {
-                                    "user_id": result.isertId,
+                                    "user_id": result.insertId,
                                     "username": username,
                                     "email": email
                                 },

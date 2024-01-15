@@ -1,4 +1,4 @@
-const {dbPool}= require('../dbService.js');
+const dbPool = require('../dbService.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();

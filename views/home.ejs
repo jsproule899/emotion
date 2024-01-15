@@ -14,114 +14,104 @@
 </head>
 
 <body>
- 
+
 
   <%- include('partials/navbar') %>
+  <script> document.getElementById("nav-features").classList.add("active")</script>
     <div class="container" style="min-height: 100lvh;">
-      <div class="container col-xxl-10 px-4 py-5">
+      <div class="container col-xxl-10 px-4 ">
         <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
           <div class="col-10 col-sm-8 col-lg-6 mx-auto">
-            
-            <img src="img/collage.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500"
-              loading="lazy">
+
+            <img src="img/collage.jpg" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700"
+              height="500" loading="lazy">
           </div>
           <div class="col-lg-6 ">
             <% if(locals.user) { %>
-              <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3 text-lg-start text-center">Hi <%=user.username %>!</h1>
+              <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3 text-lg-start text-center">Hi <%=user.username
+                  %>!</h1>
               <p class="lead text-lg-start text-center">Welcome back to your favourite mood tracking platform</p>
-               
+
               <div class="d-grid gap-2 d-flex justify-content-lg-start justify-content-center">
                 <a type="button" class="btn btn-primary btn-lg px-4 me-md-2" href="/mood/add">Add Mood</a>
               </div>
               <%} else { %>
-            <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3 text-lg-start text-center">Responsive
-              left-aligned hero with image</h1>
-            <p class="lead text-lg-start text-center ">Quickly design and customize responsive mobile-first sites with Bootstrap, the world’s
-              most popular front-end open source toolkit, featuring Sass variables and mixins, responsive grid
-              system, extensive prebuilt components, and powerful JavaScript plugins.</p>
-             
-            <div class="d-grid gap-2 d-flex justify-content-lg-start justify-content-center">
-              <a type="button" class="btn btn-primary btn-lg px-4 me-md-2" href="/login">Start Tracking</a>
-            </div> 
-            <% }  %>
+                <h1 class="display-5 fw-bold text-body-emphasis lh-1 mb-3 text-lg-start text-center">
+                  Welcome to your new favourite mood tracking platform
+                </h1>
+                <p class="lead text-lg-start text-center ">
+                  <strong>MindYourSelf</strong> is a user-friendly platform for users to track levels for enjoyment,
+                  sadness, anger,
+                  contempt, disgust, fear and surprise.
+
+                  Identify triggers and patterns to help prevent negative moods and improve your mental health.
+                </p>
+
+                <div class="d-grid gap-2 d-flex justify-content-lg-start justify-content-center">
+                  <a type="button" class="btn btn-primary btn-lg px-4 me-md-2" href="/login">Start Tracking</a>
+                </div>
+                <% } %>
           </div>
         </div>
       </div>
 
       <div class="container px-4 py-5" id="icon-grid">
-        <h2 class="pb-2 border-bottom">Icon grid</h2>
-
-        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-5">
+        <h2 class="pb-2 border-bottom">Features</h2>
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4 py-3">
           <div class="col d-flex align-items-start">
-            <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
-              <use xlink:href="#bootstrap"></use>
-            </svg>
+            <i class="bi bi-7-square-fill text-body-secondary flex-shrink-0 me-3 h4"></i>
             <div>
-              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-              <p>Paragraph of text beneath the heading to explain the heading.</p>
+              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Emotions</h3>
+              <p>Record a value for each of the seven universal emoitions to reflect your Mood</p>
+            </div>
+          </div>
+        <div class="col d-flex align-items-start">
+            <i class="bi bi-calendar-week-fill text-body-secondary flex-shrink-0 me-3 h4"></i>
+            <div>
+              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Date and Time</h3>
+              <p>Timestamps for each Mood allow you to trend relationships between emotions and day or time.</p>
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
-              <use xlink:href="#cpu-fill"></use>
-            </svg>
+            <i class="bi bi-chat-right-dots-fill text-body-secondary flex-shrink-0 me-3 h4"></i>
             <div>
-              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-              <p>Paragraph of text beneath the heading to explain the heading.</p>
+              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Contextual Triggers</h3>
+              <p>Optional pre-defined triggers and comment for each Mood to add context to identify patterns.</p>
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
-              <use xlink:href="#calendar3"></use>
-            </svg>
+            <i class="bi bi-graph-up-arrow text-body-secondary flex-shrink-0 me-3 h4"></i>
             <div>
-              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-              <p>Paragraph of text beneath the heading to explain the heading.</p>
+              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Statistics</h3>
+              <p>View graphical data on your Moods and get a visual representation of your emotions.</p>
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
-              <use xlink:href="#home"></use>
-            </svg>
+            <i class="bi bi-clock-history text-body-secondary flex-shrink-0 me-3 h4"></i>
             <div>
-              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-              <p>Paragraph of text beneath the heading to explain the heading.</p>
+              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Go Back in Time</h3>
+              <p>Forgot to add a Mood? Don't worry you can change the date and time when adding a new mood.</p>
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
-              <use xlink:href="#speedometer2"></use>
-            </svg>
+            <i class="bi bi-piggy-bank text-body-secondary flex-shrink-0 me-3 h4"></i>
             <div>
-              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-              <p>Paragraph of text beneath the heading to explain the heading.</p>
+              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">No Subscription</h3>
+              <p>Use MindYourSelf without any cost, we are only focused on your wellbeing.</p>
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
-              <use xlink:href="#toggles2"></use>
-            </svg>
+            <i class="bi bi-pencil-square text-body-secondary flex-shrink-0 me-3 h4"></i>
             <div>
-              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-              <p>Paragraph of text beneath the heading to explain the heading.</p>
+              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Edit Context</h3>
+              <p>Update the contextual triggers of each Mood without losing the emotion data.</p>
             </div>
           </div>
           <div class="col d-flex align-items-start">
-            <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
-              <use xlink:href="#geo-fill"></use>
-            </svg>
+            <i class="bi bi-trash3-fill text-body-secondary flex-shrink-0 me-3 h4"></i>
             <div>
-              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-              <p>Paragraph of text beneath the heading to explain the heading.</p>
-            </div>
-          </div>
-          <div class="col d-flex align-items-start">
-            <svg class="bi text-body-secondary flex-shrink-0 me-3" width="1.75em" height="1.75em">
-              <use xlink:href="#tools"></use>
-            </svg>
-            <div>
-              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Featured title</h3>
-              <p>Paragraph of text beneath the heading to explain the heading.</p>
+              <h3 class="fw-bold mb-0 fs-4 text-body-emphasis">Delete Moods</h3>
+              <p>Remove Moods that you no longer wish to track.</p>
             </div>
           </div>
         </div>

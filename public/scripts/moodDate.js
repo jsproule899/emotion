@@ -63,6 +63,7 @@ leftDateArrow.addEventListener('click', () => {
     if (Math.floor((Date.now() - timestamp) / 86400000) >= 1)
         rightDateArrow.classList.remove("visually-hidden");
     else rightDateArrow.classList.add("visually-hidden");
+    dateChange.classList.remove("visually-hidden");
 })
 
 rightDateArrow.addEventListener('click', () => {
@@ -72,6 +73,8 @@ rightDateArrow.addEventListener('click', () => {
     if (Math.floor((Date.now() - timestamp) / 86400000) >= 1)
         rightDateArrow.classList.remove("visually-hidden");
     else rightDateArrow.classList.add("visually-hidden");
+    dateChange.classList.remove("visually-hidden");
+
 })
 
 function updateFormTimestamp(){
