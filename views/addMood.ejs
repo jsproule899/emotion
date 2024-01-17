@@ -17,7 +17,7 @@
 
     <%- include('partials/navbar') %>
         <script> document.getElementById("nav-add").classList.add("active")</script>
-        
+
         <div class="my-3 error-alert" id="error-alert">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong id="error-msg">
@@ -48,7 +48,7 @@
                     </div>
                 </div>
 
-                
+
 
                 </h2>
                 <h1 class="text-center fw-bold fs-1">How are you feeling?</h1>
@@ -118,11 +118,11 @@
 
                                                 <script>
                                                     const <%=contextType.context_type_name %> = document.getElementById('<%=contextType.context_type_name %>')
-                                                    const <%=contextType.context_type_name %>_box = document.getElementById('<%=contextType.context_type_name %>-box')
-                                                        <%=contextType.context_type_name %>_box.addEventListener('click', () => {
+                                                    const <%=contextType.context_type_name + "_box" %> = document.getElementById('<%=contextType.context_type_name %>-box')
+                                                        <%=contextType.context_type_name + "_box" %>.addEventListener('click', () => {
                                                                  <%=contextType.context_type_name %>.checked = !<%= contextType.context_type_name %>.checked;
-                                                    <%=contextType.context_type_name %>_box.classList.toggle('context-box-checked');
-                                                    
+                                                    <%=contextType.context_type_name + "_box" %>.classList.toggle('context-box-checked');
+
 
 
                                                         });
@@ -148,7 +148,8 @@
 
                                     </script>
 
-                                    <input type="datetime-local" class="visually-hidden" name="timestamp" id="form-timestamp">
+                                    <input type="datetime-local" class="visually-hidden" name="timestamp"
+                                        id="form-timestamp">
 
 
                                 </div>

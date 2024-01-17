@@ -78,7 +78,7 @@
                                             <div class="col-10 my-2 mx-0 p-0 d-flex justify-content-center ">
                                                 <ul class="list-group list-group-horizontal mb-3 overflow-x-scroll context-scroll"
                                                     id="context-list">
-                                                    <%contextType.forEach(contextType=>{%>
+                                                    <% contextType.forEach(contextType=>{ %>
                                                         <div class="text-center ">
                                                             <h6 class="fw-lighter m-0" style="font-size: 0.75rem;">
                                                                 <%=contextType.context_type_name %>
@@ -99,10 +99,10 @@
 
                                                         <script>
                                                             const <%=contextType.context_type_name %> = document.getElementById('<%=contextType.context_type_name %>')
-                                                            const <%=contextType.context_type_name%>_box = document.getElementById('<%=contextType.context_type_name %>-box')
-                                                                <%=contextType.context_type_name %>_box.addEventListener('click', () => {
+                                                            const <%=contextType.context_type_name + "_box" %> = document.getElementById('<%=contextType.context_type_name %>-box')
+                                                                <%=contextType.context_type_name + "_box" %>.addEventListener('click', () => {
                                                          <%=contextType.context_type_name %>.checked = !<%= contextType.context_type_name %>.checked;
-                                            <%=contextType.context_type_name %>_box.classList.toggle('context-box-checked');
+                                            <%=contextType.context_type_name + "_box" %>.classList.toggle('context-box-checked');
 
 
 
@@ -299,6 +299,7 @@
                                     </div>
 
                                 </div>
+
                                 <% } %>
                                     <% } else { %>
                                         <h1 class="text-center">No moods to show... <a href="/mood/add"> Add
@@ -307,17 +308,116 @@
                                         <% } %>
                     </div>
         </div>
+        <div clas="d-flex row">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                <li class="page-item ">
+                    <a class="page-link" id="prev-page" onclick="prevPage()">Previous</a>
+                </li>
+                <% for(var i=1; i<=totalPages; i++) { %>
+                    <li class="page-item"><a class="page-link" id="page-link<%= i %>" onclick="setPage(<%= i %>)">
+                            <%= i %>
+                        </a></li>
 
+
+                    <% } %>
+
+
+                        <li class="page-item">
+                            <a class="page-link" id="next-page" onclick="nextPage()">Next</a>
+                        </li>
+
+            </ul>
+
+        </nav>
+        <nav aria-label="Page navigation "></nav>
+        <ul class="pagination justify-content-center ">
+            <li class="page-item disabled" for="limit"  id="label-limit"> <a class="page-link" >Limit</a></li>
+            <select class="form-select limit-select vis " name="limit" id="record-limit" onchange="setLimit()" value="25">
+                <option value="5" id="limit5">5</option>
+                <option value="10" id="limit10">10</option>
+                <option value="25" id="limit25">25</option>
+                <option value="50" id="limit50">50</option>
+                <option value="100" id="limit100">100</option>
+            </select>
+        </div>
+            <script>
+                let params = new URLSearchParams(document.location.search);
+                let limit = params.get("limit");
+                let pg = params.get("page");               
+                
+                
+                    if(!<%=totalPages%>) {
+                        document.getElementById('prev-page').classList.add('visually-hidden');
+                        document.getElementById('next-page').classList.add('visually-hidden');
+                        document.getElementById('record-limit').classList.add('visually-hidden');
+                        document.getElementById('label-limit').classList.add('visually-hidden');
+                    }
+                document.getElementById('page-link'+pg).classList.add('active');
+                    if(pg==1) {
+                    document.getElementById('prev-page').classList.add('disabled')}
+                    else{
+                    document.getElementById('prev-page').classList.remove('disabled')
+                    };
+
+                    if(pg==<%=totalPages%>) {
+                    document.getElementById('next-page').classList.add('disabled')}
+                    else{
+                        document.getElementById('prev-page').classList.remove('disabled')
+                    };
+
+                    
+
+                    switch(parseInt(limit)){
+                        case 5: document.getElementById('limit5').selected = 'selected'; break;
+                        case 10: document.getElementById('limit10').selected = 'selected'; break;
+                        case 25: document.getElementById('limit25').selected = 'selected'; break;
+                        case 50: document.getElementById('limit50').selected = 'selected' ;break;
+                        case 100: document.getElementById('limit100').selected = 'selected' ;break;
+                        default: document.getElementById('limit10').selected = 'selected' ;break;
+                        
+                    }
+
+                const recordLimit = document.getElementById('record-limit');
+                function setLimit() {
+
+                    window.location.search = "?page=1&limit=" + recordLimit.value;
+                }
+                function setPage(page) {
+                    window.location.search = "?page=" + page + "&limit=" + limit
+                    
+                    
+                }
+                function prevPage() {
+                    currPg = parseInt(pg)
+                    if(currPg==1) return;
+                    window.location.search = "?page=" + (currPg-1) + "&limit=" + limit
+                }
+                function nextPage() {
+                    currPg = parseInt(pg)
+                    if(currPg==<%=totalPages%>) return;
+                    window.location.search = "?page=" + (currPg+1) + "&limit=" + limit
+                }
+            </script>
+
+        </ul>
+
+        </nav>
 
 
 
         <%- include('partials/footer') %>
 
             <script>
-                    function deleteMood(id) {
-                        const deleteMoodForm = document.getElementById('form-delete-mood');
-                        deleteMoodForm.action = "/mood/delete/" + id;
-                    }
+
+
+
+                function deleteMood(id) {
+                    const deleteMoodForm = document.getElementById('form-delete-mood');
+                    deleteMoodForm.action = "/mood/delete/" + id;
+                }
+
+
 
 
                 function editMood(id, context) {

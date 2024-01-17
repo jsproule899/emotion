@@ -1,4 +1,4 @@
-:root {
+    :root {
     --slider-color: cornflowerblue;
 
 }
@@ -12,6 +12,35 @@
     outline: 2px solid #2b8c80;
 
 }
+
+.page-link{
+
+    color:#2b8c80;
+}
+
+.page-link:hover{
+
+    color:#7dd7cc;
+}
+
+.page-link.active{
+    
+    background-color: #2b8c80;;
+    border-color: #2b8c80;;
+}
+
+.limit-select{
+    width:auto;
+    border-radius: 0%;
+}
+
+.limit-select:focus{
+border-color: #7dd7cc;    
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(43, 140, 128, 0.5);
+}
+
+
 
 .bi
 {
@@ -237,8 +266,7 @@ a:hover {
 }
 
 .form-check-input:focus {
-    border-color: #7dd7cc;
-    ;
+    border-color: #7dd7cc;    
     outline: 0;
     box-shadow: 0 0 0 0.25rem rgba(43, 140, 128, 0.5);
 }
