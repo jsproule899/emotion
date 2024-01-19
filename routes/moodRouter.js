@@ -3,39 +3,31 @@ const router = express.Router();
 const moodController = require('../controllers/moodController');
 
 router.get('/view/', async (req, res) => {
+
     if (!req.user) return res.redirect('/login')
     const user = req.user;
     let page = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 10;
-    
+    let sort = req.query.sort || 'desc';
+    try {
+        res.status(200);
+        const totalPages = await moodController.getPageCount(user, limit);
+        const contextType = await moodController.getContextType();
+        const moods = await moodController.getMoodsByUser(user, page, limit, sort);
 
-    const totalPages= await moodController.getPageCount(user, limit)
-        .then(totalPages => { return totalPages })
-        .catch(err => console.log(err));
+        if (totalPages && contextType && moods) {
+
+            res.render('viewMoods',
+                { moods, user, totalPages, contextType });
+        }
+    } catch (err) {
+        console.log(err)
+
         
+    }
+}
 
-    res.status(200);
-
-
-    const contextType = await moodController.getContextType()
-        .then(contextType => { return contextType })
-        .catch(err => console.log(err));
-
-
-    moodController.getMoodsByUser(user, page, limit)
-        .then(data => {
-            //console.log(data)
-            res.render('viewMoods',
-                { data, user, totalPages, contextType });
-        })
-        .catch((err, data) => {
-            console.log(err)
-
-            res.render('viewMoods',
-                { errMessage: err.message, data, user, contextType });
-        })
-
-});
+);
 
 
 

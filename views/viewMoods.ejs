@@ -10,8 +10,7 @@
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../styles/mystyles.css">
-    <Script src="../scripts/theme.js"></Script>
-
+    <script src="../scripts/theme.js"></script>
 </head>
 
 <body>
@@ -151,9 +150,9 @@
                         </div>
                     </div>
                     <div class="row row-cols-auto justify-content-center mx-auto">
-
-                        <% if(data) { %>
-                            <% for(let mood of data) { %>
+                        <!-- Mood Cards -->
+                        <% if(moods) { %>
+                            <% for(let mood of moods) { %>
 
                                 <div class="col mb-3 text-center">
 
@@ -308,135 +307,78 @@
                                         <% } %>
                     </div>
         </div>
-        <div clas="d-flex row">
-        <nav aria-label="Page navigation">
-            <ul class="pagination justify-content-center">
-                <li class="page-item ">
-                    <a class="page-link" id="prev-page" onclick="prevPage()">Previous</a>
-                </li>
-                <% for(var i=1; i<=totalPages; i++) { %>
-                    <li class="page-item"><a class="page-link" id="page-link<%= i %>" onclick="setPage(<%= i %>)">
-                            <%= i %>
-                        </a></li>
+
+        <!-- Pagination -->
 
 
-                    <% } %>
+        <hr />
+        <nav class="container-fluid text-center" aria-label="Page navigation hstack">
+            <div class="row justify-content-evenly ">
+                <ul class="pagination col-auto p-0 mx-2">
+                    <li class="page-item disabled" for="sort" id="label-sort"> <a class="page-link">Sort</a></li>
+                    <select class="form-select limit-select vis " name="sort" id="record-sort"
+                        onchange="setSort()">
+                        <option value="asc" id="sortAsc">Oldest</option>
+                        <option value="desc" id="sortDesc">Newest</option>
+                    </select>
+                </ul>
+                <ul class="pagination col-auto p-0 mx-2">
+                    <li class="page-item ">
+                        <a class="page-link" id="prev-page" onclick="prevPage()">Previous</a>
+                    </li>
+                    <% for(var i=1; i<=totalPages; i++) { %>
+                        <li class="page-item"><a class="page-link" id="page-link<%= i %>" onclick="setPage(<%= i %>)">
+                                <%= i %>
+                            </a></li>
+
+                        <% } %>
+                            <li class="page-item">
+                                <a class="page-link" id="next-page" onclick="nextPage()">Next</a>
+                            </li>
+                </ul>
 
 
-                        <li class="page-item">
-                            <a class="page-link" id="next-page" onclick="nextPage()">Next</a>
-                        </li>
 
-            </ul>
+                <ul class="pagination col-auto p-0 mx-2 ">
+                    <li class="page-item disabled" for="limit" id="label-limit"> <a class="page-link">Limit</a></li>
+                    <select class="form-select limit-select vis " name="limit" id="record-limit" onchange="setLimit()"
+                        value="25">
+                        <option value="5" id="limit5">5</option>
+                        <option value="10" id="limit10">10</option>
+                        <option value="25" id="limit25">25</option>
+                        <option value="50" id="limit50">50</option>
+                        <option value="100" id="limit100">100</option>
+                    </select>
 
+
+                    <script src="../scripts/moodPagination.js" total-pages="<%= totalPages%>"></script>
+
+                </ul>
+            </div>
         </nav>
-        <nav aria-label="Page navigation "></nav>
-        <ul class="pagination justify-content-center ">
-            <li class="page-item disabled" for="limit"  id="label-limit"> <a class="page-link" >Limit</a></li>
-            <select class="form-select limit-select vis " name="limit" id="record-limit" onchange="setLimit()" value="25">
-                <option value="5" id="limit5">5</option>
-                <option value="10" id="limit10">10</option>
-                <option value="25" id="limit25">25</option>
-                <option value="50" id="limit50">50</option>
-                <option value="100" id="limit100">100</option>
-            </select>
-        </div>
-            <script>
-                let params = new URLSearchParams(document.location.search);
-                let limit = params.get("limit");
-                let pg = params.get("page");               
-                
-                
-                    if(!<%=totalPages%>) {
-                        document.getElementById('prev-page').classList.add('visually-hidden');
-                        document.getElementById('next-page').classList.add('visually-hidden');
-                        document.getElementById('record-limit').classList.add('visually-hidden');
-                        document.getElementById('label-limit').classList.add('visually-hidden');
-                    }
-                document.getElementById('page-link'+pg).classList.add('active');
-                    if(pg==1) {
-                    document.getElementById('prev-page').classList.add('disabled')}
-                    else{
-                    document.getElementById('prev-page').classList.remove('disabled')
-                    };
 
-                    if(pg==<%=totalPages%>) {
-                    document.getElementById('next-page').classList.add('disabled')}
-                    else{
-                        document.getElementById('prev-page').classList.remove('disabled')
-                    };
-
-                    
-
-                    switch(parseInt(limit)){
-                        case 5: document.getElementById('limit5').selected = 'selected'; break;
-                        case 10: document.getElementById('limit10').selected = 'selected'; break;
-                        case 25: document.getElementById('limit25').selected = 'selected'; break;
-                        case 50: document.getElementById('limit50').selected = 'selected' ;break;
-                        case 100: document.getElementById('limit100').selected = 'selected' ;break;
-                        default: document.getElementById('limit10').selected = 'selected' ;break;
-                        
-                    }
-
-                const recordLimit = document.getElementById('record-limit');
-                function setLimit() {
-
-                    window.location.search = "?page=1&limit=" + recordLimit.value;
-                }
-                function setPage(page) {
-                    window.location.search = "?page=" + page + "&limit=" + limit
-                    
-                    
-                }
-                function prevPage() {
-                    currPg = parseInt(pg)
-                    if(currPg==1) return;
-                    window.location.search = "?page=" + (currPg-1) + "&limit=" + limit
-                }
-                function nextPage() {
-                    currPg = parseInt(pg)
-                    if(currPg==<%=totalPages%>) return;
-                    window.location.search = "?page=" + (currPg+1) + "&limit=" + limit
-                }
-            </script>
-
-        </ul>
-
-        </nav>
 
 
 
         <%- include('partials/footer') %>
 
             <script>
-
-
-
                 function deleteMood(id) {
                     const deleteMoodForm = document.getElementById('form-delete-mood');
                     deleteMoodForm.action = "/mood/delete/" + id;
                 }
 
-
-
-
                 function editMood(id, context) {
-
                     const contextComment = document.getElementById('context-comment');
                     const updateMoodForm = document.getElementById('form-update-mood');
                     updateMoodForm.action = "/mood/update/" + id;
                     contextComment.innerHTML = context;
 
-
-                    ;
                 }
             </script>
             <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
                 integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                 crossorigin="anonymous"></script>
-
-
-
 
 </body>
 

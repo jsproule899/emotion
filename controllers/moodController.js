@@ -27,13 +27,18 @@ async function getAllMoods() {
     }
 }
 
-async function getMoodsByUser(user, page, limit) {
+async function getMoodsByUser(user, page, limit, sort) {
 
     var offset = limit * (page - 1);
-
-
     try {
-        var moodQuery = `SELECT * FROM mood JOIN context ON context.context_id = mood.context_id WHERE user_id = ? ORDER BY mood_timestamp DESC LIMIT ? OFFSET ? `
+         switch(sort){
+            case "asc": var moodQuery = `SELECT * FROM mood JOIN context ON context.context_id = mood.context_id WHERE user_id = ? ORDER BY mood_timestamp ASC LIMIT ? OFFSET ? `
+                break;
+            case "desc": var moodQuery = `SELECT * FROM mood JOIN context ON context.context_id = mood.context_id WHERE user_id = ? ORDER BY mood_timestamp DESC LIMIT ? OFFSET ? `
+                break;
+            default: var moodQuery = `SELECT * FROM mood JOIN context ON context.context_id = mood.context_id WHERE user_id = ? ORDER BY mood_timestamp DESC LIMIT ? OFFSET ? `
+
+        }
 
         var emotionQuery = `SELECT emotion_name, emotion_level, emotion_colour, emotion_icon FROM mood JOIN mood_emotion ON mood.mood_id = mood_emotion.mood_id 
                                 JOIN emotion ON emotion.emotion_id = mood_emotion.emotion_id 
@@ -45,37 +50,35 @@ async function getMoodsByUser(user, page, limit) {
                                 WHERE mood.context_id = ? `
 
 
-        const moodResult =
-            await new Promise((resolve, reject) => {
-                dbPool.query(moodQuery, [user.user_id, +limit, +offset], (err, result) => {
-                    if (err) reject(err);
-                    if (result.length > 0) {
-                        result.forEach(async (mood, index, array) => {
-
-                            mood.emotion = await new Promise((resolve, reject) => {
-                                dbPool.query(emotionQuery, [mood.mood_id], (err, result) => {
-                                    if (err) reject(err);
-                                    resolve(result);
-                                });
-                            });
-
-                            mood.context = await new Promise((resolve, reject) => {
-                                dbPool.query(contextQuery, [mood.context_id], (err, result) => {
-                                    if (err) reject(err);
-                                    
-                                    resolve(result);
-                                });
-                            });
-
-                            array[index] = mood;
-                            if (array.length - 1 == index) resolve(array)
-
-
+        let moodArray = await new Promise((resolve, reject) => {
+            dbPool.query(moodQuery, [user.user_id,  +limit, +offset], (err, moods) => {
+                if (err) reject(err);                
+                if(!moods) return reject(new Error(err.message));
+                if (moods.length > 0) {
+                    let promises = moods.map(async (mood) => {
+                        mood.emotion = await new Promise((resolve, reject) => {
+                            dbPool.query(emotionQuery, [mood.mood_id], (err, emotions) => {
+                                if (err) reject(err);
+                                resolve(emotions);
+                            })
                         });
-                    } else { resolve(null) }
-                });
+                        mood.context = await new Promise((resolve, reject) => {
+                            dbPool.query(contextQuery, [mood.context_id], (err, context) => {
+                                if (err) reject(err);
+                                resolve(context);
+                            })
+                        });
+                        return mood;
+                    });
+                    Promise.all(promises).then(
+                        moods => {
+                            resolve(moods);
+                        }
+                    )
+                } else { return null }
             });
-        return moodResult
+        })
+        return moodArray;
     } catch (error) {
         console.log(error);
         throw error;
