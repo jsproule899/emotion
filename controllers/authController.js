@@ -45,7 +45,8 @@ async function hashByEmail(email) {
         const res = await new Promise((resolve, reject) => {
             const query = 'SELECT * FROM user WHERE email = ?';
             dbPool.query(query, [email], (err, result) => {
-
+                console.log(err)
+                console.log(result)
                 if (err) reject(new Error(err.message));
                 if (!result[0]) reject(new Error("Account does not exist"));
                 if (result[0]) resolve(result[0]);
