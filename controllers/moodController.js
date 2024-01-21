@@ -53,41 +53,42 @@ async function getMoodsByUser(user, page, limit, sort) {
         let moodArray = await new Promise((resolve, reject) => {
             dbPool.getConnection((err, connection) => {
                 connection.beginTransaction((err) => {
-                    if (err) {
-                        connection.release(); reject(err)
-                    } else {
-                        connection.query(moodQuery, [user.user_id, +limit, +offset], (err, moods) => {
-                            if (err) { connection.release(); reject(err) };
-                            if (!moods) return reject(new Error(err.message));
-                            if (moods.length > 0) {
-                                let promises = moods.map(async (mood) => {
-                                    mood.emotion = await new Promise((resolve, reject) => {
-                                        connection.query(emotionQuery, [mood.mood_id], (err, emotions) => {
-                                            if (err) { connection.release(); reject(err) };
-                                            resolve(emotions);
-                                        })
-                                    });
-                                    mood.context = await new Promise((resolve, reject) => {
-                                        connection.query(contextQuery, [mood.context_id], (err, context) => {
-                                            if (err) { connection.release(); reject(err) };
-                                            resolve(context);
-                                        })
-                                    });
-                                    return mood;
+                    if (err) { connection.release(); reject(err) }
+                    connection.query(moodQuery, [user.user_id, +limit, +offset], (err, moods) => {
+                        if (err) { connection.release(); reject(err) };
+                        if (!moods) { connection.release(); return reject(new Error(err.message)); }
+                        if (moods.length > 0) {
+                            let promises = moods.map(async (mood) => {
+                                mood.emotion = await new Promise((resolve, reject) => {
+                                    connection.query(emotionQuery, [mood.mood_id], (err, emotions) => {
+                                        if (err) { connection.release(); reject(err) };
+                                        resolve(emotions);
+                                    })
                                 });
-                                Promise.all(promises).then(
-                                    moods => {
+                                mood.context = await new Promise((resolve, reject) => {
+                                    connection.query(contextQuery, [mood.context_id], (err, context) => {
+                                        if (err) { connection.release(); reject(err) };
+                                        resolve(context);
+                                    })
+                                });
+                                return mood;
+                            });
+                            Promise.all(promises).then(
+                                moods => {
+                                    connection.commit(() => {
+                                        connection.release();
                                         resolve(moods);
-                                    }
-                                )
-                            } else { return null }
+                                    })
 
-                        });
-                    }
+                                }
+                            )
+                        } else { connection.release(); return null }
 
+                    });
                 });
             });
         });
+
         return moodArray;
     } catch (error) {
         console.log(error);
