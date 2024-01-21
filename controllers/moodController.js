@@ -27,7 +27,7 @@ async function getAllMoods() {
     }
 }
 
-async function getMoodsByUser(user, page, limit, sort) {
+async function getMoodsByUser(user, page, limit, sort, search) {
 
     var offset = limit * (page - 1);
     try {

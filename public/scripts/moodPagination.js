@@ -5,6 +5,7 @@ let params = new URLSearchParams(document.location.search);
             let totalPages = parseInt(document.currentScript.getAttribute('total-pages'))
             const recordLimit = document.getElementById('record-limit');
             const sorted = document.getElementById('record-sort');
+            const search = document.getElementById('search-box');
 
             if (!totalPages) {
                 document.getElementById('prev-page').classList.add('visually-hidden');
@@ -58,6 +59,12 @@ let params = new URLSearchParams(document.location.search);
 
 
             }
+
+            function setSearch() {
+                window.location.search = "?page=" + pg + "&limit=" + limit + "&sort=" + sort + "&search=" + search;
+
+
+        }
             function prevPage() {
                 currPg = parseInt(pg)
                 if (currPg == 1) return;
