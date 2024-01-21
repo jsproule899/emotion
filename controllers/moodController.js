@@ -31,7 +31,7 @@ async function getMoodsByUser(user, page, limit, sort) {
 
     var offset = limit * (page - 1);
     try {
-         switch(sort){
+        switch (sort) {
             case "asc": var moodQuery = `SELECT * FROM mood JOIN context ON context.context_id = mood.context_id WHERE user_id = ? ORDER BY mood_timestamp ASC LIMIT ? OFFSET ? `
                 break;
             case "desc": var moodQuery = `SELECT * FROM mood JOIN context ON context.context_id = mood.context_id WHERE user_id = ? ORDER BY mood_timestamp DESC LIMIT ? OFFSET ? `
@@ -51,33 +51,43 @@ async function getMoodsByUser(user, page, limit, sort) {
 
 
         let moodArray = await new Promise((resolve, reject) => {
-            dbPool.query(moodQuery, [user.user_id,  +limit, +offset], (err, moods) => {
-                if (err) reject(err);                
-                if(!moods) return reject(new Error(err.message));
-                if (moods.length > 0) {
-                    let promises = moods.map(async (mood) => {
-                        mood.emotion = await new Promise((resolve, reject) => {
-                            dbPool.query(emotionQuery, [mood.mood_id], (err, emotions) => {
-                                if (err) reject(err);
-                                resolve(emotions);
-                            })
+            dbPool.getConnection((err, connection) => {
+                connection.beginTransaction((err) => {
+                    if (err) {
+                        connection.release(); reject(err)
+                    } else {
+                        connection.query(moodQuery, [user.user_id, +limit, +offset], (err, moods) => {
+                            if (err) { connection.release(); reject(err) };
+                            if (!moods) return reject(new Error(err.message));
+                            if (moods.length > 0) {
+                                let promises = moods.map(async (mood) => {
+                                    mood.emotion = await new Promise((resolve, reject) => {
+                                        connection.query(emotionQuery, [mood.mood_id], (err, emotions) => {
+                                            if (err) { connection.release(); reject(err) };
+                                            resolve(emotions);
+                                        })
+                                    });
+                                    mood.context = await new Promise((resolve, reject) => {
+                                        connection.query(contextQuery, [mood.context_id], (err, context) => {
+                                            if (err) { connection.release(); reject(err) };
+                                            resolve(context);
+                                        })
+                                    });
+                                    return mood;
+                                });
+                                Promise.all(promises).then(
+                                    moods => {
+                                        resolve(moods);
+                                    }
+                                )
+                            } else { return null }
+
                         });
-                        mood.context = await new Promise((resolve, reject) => {
-                            dbPool.query(contextQuery, [mood.context_id], (err, context) => {
-                                if (err) reject(err);
-                                resolve(context);
-                            })
-                        });
-                        return mood;
-                    });
-                    Promise.all(promises).then(
-                        moods => {
-                            resolve(moods);
-                        }
-                    )
-                } else { return null }
+                    }
+
+                });
             });
-        })
+        });
         return moodArray;
     } catch (error) {
         console.log(error);
