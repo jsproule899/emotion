@@ -221,9 +221,6 @@ input[type=range]::-moz-range-track {
     color: #2b8c80;
 }
 
-.i-click:hover {
-    color: ;
-}
 
 .context-box-checked {
     --bs-border-color: #7dd7cc;

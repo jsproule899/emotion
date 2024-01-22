@@ -9,10 +9,11 @@ router.get('/view/', async (req, res) => {
     let page = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 10;
     let sort = req.query.sort || 'desc';
-    let search = req.query.serach || '';
+    let search = req.query.search || '';
+    
     try {
         res.status(200);
-        const totalPages = await moodController.getPageCount(user, limit);
+        const totalPages = await moodController.getPageCount(user, limit, search);
         const contextType = await moodController.getContextType();
         const moods = await moodController.getMoodsByUser(user, page, limit, sort, search);
 

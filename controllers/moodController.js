@@ -30,13 +30,17 @@ async function getAllMoods() {
 async function getMoodsByUser(user, page, limit, sort, search) {
 
     var offset = limit * (page - 1);
+    
     try {
         switch (sort) {
-            case "asc": var moodQuery = `SELECT * FROM mood JOIN context ON context.context_id = mood.context_id WHERE user_id = ? ORDER BY mood_timestamp ASC LIMIT ? OFFSET ? `
+            case "asc": var moodQuery = `SELECT DISTINCT mood_id,mood_timestamp,user_id,mood.context_id,context_comment,context_timestamp FROM mood LEFT JOIN context ON context.context_id = mood.context_id LEFT JOIN context_context_type ON context.context_id = 
+                                         context_context_type.context_id LEFT JOIN context_type ON context_type.context_type_id = context_context_type.context_type_id WHERE user_id = ? AND (context_comment LIKE CONCAT('%',?,'%') OR context_type_name LIKE CONCAT('%',?,'%')) ORDER BY mood_timestamp ASC LIMIT ? OFFSET ? `
                 break;
-            case "desc": var moodQuery = `SELECT * FROM mood JOIN context ON context.context_id = mood.context_id WHERE user_id = ? ORDER BY mood_timestamp DESC LIMIT ? OFFSET ? `
+            case "desc": var moodQuery = `SELECT DISTINCT mood_id,mood_timestamp,user_id,mood.context_id,context_comment,context_timestamp FROM mood LEFT JOIN context ON context.context_id = mood.context_id LEFT JOIN context_context_type ON context.context_id = 
+                                          context_context_type.context_id LEFT JOIN context_type ON context_type.context_type_id = context_context_type.context_type_id WHERE user_id = ? AND (context_comment LIKE CONCAT('%',?,'%')  OR context_type_name LIKE CONCAT('%',?,'%')) ORDER BY mood_timestamp DESC LIMIT ? OFFSET ? `
                 break;
-            default: var moodQuery = `SELECT * FROM mood JOIN context ON context.context_id = mood.context_id WHERE user_id = ? ORDER BY mood_timestamp DESC LIMIT ? OFFSET ? `
+            default: var moodQuery = `SELECT DISTINCT mood_id,mood_timestamp,user_id,mood.context_id,context_comment,context_timestamp FROM mood LEFT JOIN context ON context.context_id = mood.context_id LEFT JOIN context_context_type ON context.context_id = context_context_type.context_id
+                                      LEFT JOIN context_type ON context_type.context_type_id = context_context_type.context_type_id WHERE user_id = ? AND (context_comment LIKE CONCAT('%',?,'%') OR context_type_name LIKE CONCAT('%',?,'%')) ORDER BY mood_timestamp DESC LIMIT ? OFFSET ? `
 
         }
 
@@ -54,7 +58,7 @@ async function getMoodsByUser(user, page, limit, sort, search) {
             dbPool.getConnection((err, connection) => {
                 connection.beginTransaction((err) => {
                     if (err) { connection.release(); reject(err) }
-                    connection.query(moodQuery, [user.user_id, +limit, +offset], (err, moods) => {
+                    connection.query(moodQuery, [user.user_id, search, search, +limit, +offset], (err, moods) => {
                         if (err) { connection.release(); reject(err) };
                         if (!moods) { connection.release(); return reject(new Error(err.message)); }
                         if (moods.length > 0) {
@@ -318,11 +322,13 @@ const getContextType = async () => {
     }
 }
 
-const getPageCount = async (user, limit) => {
+const getPageCount = async (user, limit, search) => {
     try {
-        const query = "Select count(*) as TotalCount from mood WHERE user_id = ?";
+        const query = `SELECT count(DISTINCT mood_id) AS TotalCount from mood LEFT JOIN context ON context.context_id = mood.context_id LEFT JOIN context_context_type ON context.context_id = 
+                       context_context_type.context_id LEFT JOIN context_type ON context_type.context_type_id = context_context_type.context_type_id WHERE user_id = ? AND (context_comment LIKE CONCAT('%',?,'%')  OR context_type_name LIKE CONCAT('%',?,'%'))`;
+
         const res = await new Promise((resolve, reject) => {
-            dbPool.query(query, [user.user_id], (err, result) => {
+            dbPool.query(query, [user.user_id, search, search], (err, result) => {
                 if (err) reject(err);
                 const totalMoods = result[0].TotalCount;
                 const totalPages = Math.ceil(totalMoods / limit);
