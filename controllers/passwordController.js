@@ -1,7 +1,9 @@
 const dbPool = require('../dbService.js');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
-const bcrypt = require('bcrypt')
+const bcrypt = require('bcrypt');
+const { env } = require('process');
+const dotenv = require('dotenv').config()
 
 const handleForgotPassword = (req, res) => {
     const { email } = req.body;
@@ -18,7 +20,7 @@ const handleForgotPassword = (req, res) => {
                 user: 'mindyourself.onthewifi@gmail.com',
                 clientId: '234918787136-ltiolptr6pj7o81p0irhot7ajeukfuvh.apps.googleusercontent.com',
                 clientSecret: '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',
-                refreshToken: '1//04t0DsWp-K0utCgYIARAAGAQSNwF-L9IrTzx1K5iwFeecSTxs6gJPZB7XtpWLtRzFDi2lgkyc2lzQI8Qn63JRaYK3sVXj6cR_3p8'
+                refreshToken: process.env.GMAIL_REFRESH_TOKEN,
             },
         });
         const mailOptions = {
