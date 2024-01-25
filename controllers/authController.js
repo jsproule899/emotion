@@ -9,7 +9,7 @@ const handleLogin = async  (req, res) => {
     const password = req.body.password
     if (!email || !password) return res.render('login.ejs', {errMessage: 'Username and password are required'});   
     
-    hashByEmail(email).then(user => {
+    getUserByEmail(email).then(user => {
         const StoredPwd = user.password.toString('binary');
         bcrypt.compare(password, StoredPwd, (err, result) => {            
 
@@ -38,15 +38,14 @@ const handleLogin = async  (req, res) => {
     });
 }
 
-async function hashByEmail(email) {
+async function getUserByEmail(email) {
 
     try {
 
         const res = await new Promise((resolve, reject) => {
             const query = 'SELECT * FROM user WHERE email = ?';
             dbPool.query(query, [email], (err, result) => {
-                console.log(err)
-                console.log(result)
+                console.log(err)                
                 if (err) reject(new Error(err.message));
                 if (!result[0]) reject(new Error("Account does not exist"));
                 if (result[0]) resolve(result[0]);

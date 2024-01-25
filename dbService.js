@@ -9,7 +9,7 @@ const dbPool = mysql.createPool({
     port: process.env.DB_PORT,
     charset: 'utf8mb4_unicode_ci',
     multipleStatements: true
-});
+})
 
 
 module.exports =  dbPool ;

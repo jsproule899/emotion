@@ -8,6 +8,18 @@ const recordLimit = document.getElementById('record-limit');
 const sorted = document.getElementById('record-sort');
 const search = document.getElementById('search-box');
 
+if(srch) search.value = srch;
+
+search.addEventListener('keypress', (e)=>{
+if(e.key ==='Enter') 
+document.getElementById('search-btn').click();
+})
+
+search.addEventListener('search', ()=>{
+params.set('search','');
+setSearch();
+})
+
 if (!totalPages) {
     document.getElementById('prev-page').classList.add('visually-hidden');
     document.getElementById('next-page').classList.add('visually-hidden');
@@ -60,7 +72,7 @@ function setPage(page) {
 }
 
 function setSearch() {
-    window.location.search = "?page=" + pg + "&limit=" + limit + "&sort=" + sort + "&search=" + search.value;
+    window.location.search = "?page=" + 1 + "&limit=" + limit + "&sort=" + sort + "&search=" + search.value;
 }
 function prevPage() {
     currPg = parseInt(pg)

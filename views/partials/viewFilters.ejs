@@ -1,0 +1,43 @@
+<!-- filter -->
+
+<nav class="container-fluid text-center mt-2 mb-0" aria-label="Page navigation hstack">
+    <div class="row justify-content-between ">
+        <div class=" d-flex col-auto mx-auto">
+            <ul class="pagination p-0 mx-3">
+                <li class="page-item disabled" for="sort" id="label-sort"> <a class="page-link">Sort</a></li>
+                <select class="form-select filter-select vis me-2 " name="sort" id="record-sort" onchange="setSort()">
+                    <option value="asc" id="sortAsc">Oldest</option>
+                    <option value="desc" id="sortDesc">Newest</option>
+                </select>
+            </ul>
+            <ul class="pagination p-0 mx-3">
+                <li class="page-item disabled mb-0" for="limit" id="label-limit"> <a class="page-link">Limit</a></li>
+                <select class="form-select filter-select vis " name="limit" id="record-limit" onchange="setLimit()"
+                    value="25">
+                    <option value="5" id="limit5">5</option>
+                    <option value="10" id="limit10">10</option>
+                    <option value="25" id="limit25">25</option>
+                    <option value="50" id="limit50">50</option>
+                    <option value="100" id="limit100">100</option>
+                </select>
+
+            </ul>
+        </div>
+
+
+        <ul class="pagination col-auto p-0 mx-auto">
+
+            <input class="form-control search-box " type="search" placeholder="Search" id="search-box"
+                aria-label="Search">
+            <button class="btn btn-outline-primary search-btn" onclick="setSearch()" id="search-btn">Search</button>
+
+        </ul>
+
+
+
+
+
+
+    </div>
+</nav>
+<hr class="my-0" />

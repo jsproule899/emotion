@@ -4,9 +4,6 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 const handleSignup = (req, res) => {
-
-
-
     const { username, email, password } = req.body;
 
     checkEmail(email).then(result => {

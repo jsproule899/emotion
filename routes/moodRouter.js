@@ -10,7 +10,7 @@ router.get('/view/', async (req, res) => {
     let limit = parseInt(req.query.limit) || 10;
     let sort = req.query.sort || 'desc';
     let search = req.query.search || '';
-    
+
     try {
         res.status(200);
         const totalPages = await moodController.getPageCount(user, limit, search);
@@ -23,9 +23,11 @@ router.get('/view/', async (req, res) => {
                 { moods, user, totalPages, contextType });
         }
     } catch (err) {
+        res.render('viewMoods',
+            { moods: null, user, totalPages: 1, errMessage: "Cannot show Moods at this moment, please try again later..." });
         console.log(err)
 
-        
+
     }
 }
 
@@ -42,21 +44,26 @@ router.route('/add')
 
         const contextType = await moodController.getContextType()
             .then(contextType => { return contextType })
-            .catch(err => console.log(err));
+            .catch(err => {
+                res.redirect('/', { errMessage: "Error cannot add Moods at this moment, please try again later..." });
+                console.log(err)
 
+            });
         moodController.getEmotions()
             .then(emotions => { res.render('addMood', { emotions, contextType, user }) })
-            .catch(err => console.log(err));
-
+            .catch(err => {
+                res.redirect('/', { errMessage: "Error cannot add Moods at this moment, please try again later..." });
+                console.log(err)
+            });
     })
     .post(async (req, res) => {
 
         moodController.createMood(req.user, req)
-            .then(setTimeout(() =>
-                res.redirect('/mood/view'), 1000))
+            .then(
+                res.redirect('/mood/view'))
             .catch(err => {
+                res.redirect('/mood/add', { errMessage: "Error could not add Mood, please try again..." })
                 console.log(err)
-
             });
     }
     );
@@ -66,9 +73,10 @@ router.route('/delete/:id')
 
         const id = req.params.id;
         moodController.deleteMood(id)
-            .then(setTimeout(() =>
-                res.redirect('/mood/view'), 1000))
+            .then(
+                res.redirect('/mood/view'))
             .catch(err => {
+                res.redirect('/mood/view', { errMessage: "Error Mood could not be deleted, please try again..." })
                 console.log(err)
 
             });
@@ -81,9 +89,10 @@ router.route('/update/:id')
 
         const id = req.params.id;
         moodController.updateMood(id, req.body)
-            .then(setTimeout(() =>
-                res.redirect('/mood/view'), 1000))
+            .then(
+                res.redirect('/mood/view'))
             .catch(err => {
+                res.redirect('/mood/view', { errMessage: "Error Mood could not be edited, please try again..." })
                 console.log(err)
 
             });

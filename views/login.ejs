@@ -5,17 +5,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>MindYourSelf - Login</title>
-    <link rel="icon" href="../img/emotion.png">
+    <link rel="icon" href="/img/emotion.png">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="../styles/mystyles.css">
-    <Script src="../scripts/theme.js"></Script>
+    <link rel="stylesheet" href="/styles/mystyles.css">
+    <Script src="/scripts/theme.js"></Script>
 </head>
 
-<body>
+<body >
     <%- include('partials/navbar') %>
-        <div class="container" style="min-height: 100vh;">
+        <div class="container">
 
             <% if(typeof errMessage !="undefined" && errMessage) { %>
                 <div class="mt-5 mb-3">
@@ -28,6 +28,18 @@
                 </div>
 
                 <% } %>
+
+                <% if(typeof successMessage !="undefined" && successMessage) { %>
+                    <div class="mt-5 mb-3">
+                        <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            <strong>
+                                <%= successMessage %>
+                            </strong>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    </div>
+    
+                    <% } %>
                 
             <div class="container bg-body-tertiary my-5 py-4 rounded-2 form-container shadow "> <div class=" pt-3 row text-center">
                             <h1 class="fs-3 ">Welcome back to MindYourSelf!</h1>
@@ -58,7 +70,7 @@
                             </div>
                             <div class="row mb-3 p-0">
                                 <div class="text-end col-12 p-0">
-                                    <a href="">Forgot password?</a>
+                                    <a href="/password/forgot">Forgot password?</a>
                                 </div>
                             </div>
                         </div>
@@ -76,7 +88,7 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
             </script>
-        <script src="../scripts/login.js"></script>
+        <script src="/scripts/login.js"></script>
         <%- include('partials/footer') %>
 </body>
 

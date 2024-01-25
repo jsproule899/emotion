@@ -16,7 +16,7 @@ app.use(express.json());
 app.set('view engine', 'ejs');
 
 //mounting public folder
-app.use(express.static(__dirname + '/public'))
+app.use(express.static('public'))
 
 //Http logger
 app.use(morgan('tiny'));
@@ -30,11 +30,12 @@ app.use(cookieParser());
 //routes
 app.use('/login', require('./routes/loginRouter'));
 app.use('/signup', require('./routes/signupRouter'));
-app.use('/logout', require('./routes/logoutRouter'))
+app.use('/logout', require('./routes/logoutRouter'));
+app.use('/password', require('./routes/passwordRouter'))
 
 //protected routes
 app.use(verifyJWT); 
-app.use('/', require('./routes/rootRouter'))
+app.use('/', require('./routes/rootRouter'));
 app.use('/mood', require('./routes/moodRouter'));
 
 
