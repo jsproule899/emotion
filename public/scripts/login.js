@@ -72,6 +72,6 @@ emailInput.addEventListener("blur", () => {
     validateEmail();
 });
 
-passInput.addEventListener("blur", () => {
-    validatePassword();
-});
+// passInput.addEventListener("blur", () => {
+//     validatePassword();
+// });

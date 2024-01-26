@@ -18,8 +18,8 @@ const handleForgotPassword = (req, res) => {
             auth: {
                 type: 'OAUTH2',
                 user: 'mindyourself.onthewifi@gmail.com',
-                clientId: '234918787136-ltiolptr6pj7o81p0irhot7ajeukfuvh.apps.googleusercontent.com',
-                clientSecret: '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',
+                clientId: process.env.GMAIL_CLIENT_ID,
+                clientSecret: process.env.GMAIL_CLIENT_SECRET,
                 refreshToken: process.env.GMAIL_REFRESH_TOKEN,
             },
         });

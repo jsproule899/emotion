@@ -17,11 +17,9 @@ router.get('/view/', async (req, res) => {
         const contextType = await moodController.getContextType();
         const moods = await moodController.getMoodsByUser(user, page, limit, sort, search);
 
-        if (totalPages && contextType && moods) {
+        res.render('viewMoods',
+            { moods, user, totalPages, contextType });
 
-            res.render('viewMoods',
-                { moods, user, totalPages, contextType });
-        }
     } catch (err) {
         res.render('viewMoods',
             { moods: null, user, totalPages: 1, errMessage: "Cannot show Moods at this moment, please try again later..." });

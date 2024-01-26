@@ -7,7 +7,7 @@ const handleSignup = (req, res) => {
     const { username, email, password } = req.body;
 
     checkEmail(email).then(result => {
-        if (result) return res.render('signup.ejs', { errMessage: 'Email already in use, please sign in or choose another email' });
+        if (result) return res.render('signup.ejs', { errMessage: 'Email already in use, please Login or choose another email' });
         else {
             try {
                 bcrypt.hash(password, 10, (err, hash) => {

@@ -6,8 +6,6 @@ const cors = require('cors');
 const verifyJWT = require('./middleware/verifyJWT')
 const cookieParser = require('cookie-parser');
 
-//cross origin resource sharing
-app.use(cors());
 
 //built-in middleware for json
 app.use(express.json());

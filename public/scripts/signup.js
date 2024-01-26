@@ -32,11 +32,11 @@ eyeIconBox2.addEventListener('click', () => {
 
 
 tosCheckbox.addEventListener('change', () => validateForm());
-usernameInput.addEventListener("blur", () => validateForm() );
-emailInput.addEventListener("blur", () =>  validateForm());
-passInput1.addEventListener("input", () =>  validateForm());
-passInput1.addEventListener("blur", () =>  validateForm());
-passInput2.addEventListener("blur", () =>  validateForm());
+usernameInput.addEventListener("blur", () => validateForm());
+emailInput.addEventListener("blur", () => validateForm());
+passInput1.addEventListener("input", () => validateForm());
+passInput1.addEventListener("blur", () => validateForm());
+passInput2.addEventListener("blur", () => validateForm());
 
 function validateUsername() {
     var validUsername = /^[a-zA-Z0-9]{6,16}$/g;
@@ -131,9 +131,18 @@ function confirmPassword() {
 
 
 function validateForm() {
-    if (validateUsername() && validateEmail() && validatePassword() && confirmPassword())
-        (tosCheckbox.checked) ? createBtn.classList.remove('disabled') : createBtn.classList.add('disabled');
-    else createBtn.classList.add('disabled');
+    if (validateUsername() && validateEmail() && validatePassword() && confirmPassword()) {
+        if (tosCheckbox.checked) {
+            createBtn.disabled = false
+            createBtn.classList.remove('disabled')
+        } else {
+            createBtn.disabled = true;
+            createBtn.classList.add('disabled');
+        }
+    } else {
+        createBtn.classList.add('disabled');
+        createBtn.disabled = true;
+    }
 }
 
 

@@ -86,7 +86,7 @@ async function getMoodsByUser(user, page, limit, sort, search) {
 
                                 }
                             )
-                        } else { connection.release(); return null }
+                        } else { connection.release(); resolve(null) }
 
                     });
                 });

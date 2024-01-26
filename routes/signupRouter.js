@@ -5,9 +5,9 @@ const signupController = require('../controllers/signupController')
 
 router.route('/')
     .get((req, res) => {
-        res.status(200);
-        res.render('signup.ejs')
-
+        const { successMessage, errMessage } = req.query;
+        res.render('signup', {successMessage, errMessage});
+     
     }).post(signupController.handleSignup);
 
 

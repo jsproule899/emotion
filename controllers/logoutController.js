@@ -8,7 +8,7 @@ const handleLogout = (req, res) => {
     
     const accessToken = cookies.accjwt;
     
-    res.clearCookie( 'accjwt', accessToken, { httpOnly: true, maxAge: 500 * 1000 }).redirect('/');
+    res.clearCookie( 'accjwt', accessToken, { httpOnly: true }).redirect('/');
        
     
     
