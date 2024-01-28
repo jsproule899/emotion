@@ -3,7 +3,12 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-const handleLogin = async (req, res) => {
+const getLogin = (req, res) => {
+    const { successMessage, errMessage } = req.query;
+    res.render('login', { successMessage, errMessage });
+}
+
+const handleLogin = (req, res) => {
 
     const email = req.body.email;
     const password = req.body.password
@@ -60,4 +65,4 @@ async function getUserByEmail(email) {
 
 }
 
-module.exports = { handleLogin }
+module.exports = {getLogin, handleLogin }

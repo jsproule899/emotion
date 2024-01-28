@@ -4,11 +4,8 @@ const signupController = require('../controllers/signupController')
 
 
 router.route('/')
-    .get((req, res) => {
-        const { successMessage, errMessage } = req.query;
-        res.render('signup', {successMessage, errMessage});
-     
-    }).post(signupController.handleSignup);
+    .get(signupController.getSignup)
+    .post(signupController.handleSignup);
 
 
 module.exports = router;

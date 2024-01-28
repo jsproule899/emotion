@@ -29,69 +29,70 @@
 
                 <% } %>
 
-            <div class="container bg-body-tertiary my-5 py-4 rounded-2 form-container shadow">
-                <form class="pt-3 d-flex justify-content-center has-validation" action="/signup" method="post">
-                    <div class="col-10 form-input-mw ">
-                        <div class="row mb-3 text-center">
-                            <h1 class="fs-3">Create Account</h1>
-                        </div>
-                        <div class="row mb-3">
+                    <div class="container bg-body-tertiary my-5 py-4 rounded-2 form-container shadow">
+                        <form class="pt-3 d-flex justify-content-center has-validation" action="/signup" method="post">
+                            <div class="col-10 form-input-mw ">
+                                <div class="row mb-3 text-center">
+                                    <h1 class="fs-3">Create Account</h1>
+                                </div>
+                                <div class="row mb-3">
 
-                            <input type="text" name="username" class="form-control " id="usernameinput"
-                                placeholder="Username" required>
+                                    <input type="text" name="username" class="form-control " id="usernameinput"
+                                        placeholder="Username" required>
 
-                            <div class="invalid-feedback">
-                                Please enter a letters or numbers, must be at least 6 characters.
-                            </div>
-                        </div>
+                                    <div class="invalid-feedback">
+                                        Please enter a letters or numbers, must be at least 6 characters.
+                                    </div>
+                                </div>
 
-                        <div class="row mb-3">
+                                <div class="row mb-3">
 
-                            <input type="email" name="email" class="form-control" id="emailinput" placeholder="Email"
-                                aria-describedby="emailHelp">
-                            <div class="invalid-feedback">
-                                Please enter a valid email address.
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="input-group has-validation m-0 p-0">
-                                <input type="password" class="form-control" id="passinput1" placeholder="Password"
-                                    required><span class="input-group-text" id="eye-icon-box1"><i class="bi bi-eye"
-                                        id="eye-icon1"></i></span>
-                                <div class="invalid-feedback" id="passinvalid1">
-                                    Please enter a valid password.
+                                    <input type="email" name="email" class="form-control" id="emailinput"
+                                        placeholder="Email" aria-describedby="emailHelp">
+                                    <div class="invalid-feedback">
+                                        Please enter a valid email address.
+                                    </div>
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="input-group has-validation m-0 p-0">
+                                        <input type="password" class="form-control" id="passinput1"
+                                            placeholder="Password" required><span class="input-group-text"
+                                            id="eye-icon-box1"><i class="bi bi-eye" id="eye-icon1"></i></span>
+                                        <div class="invalid-feedback" id="passinvalid1">
+                                            Please enter a valid password.
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="input-group has-validation m-0 p-0">
+                                        <input type="password" name="password" class="form-control" id="passinput2"
+                                            placeholder="Confirm Password" required><span class="input-group-text"
+                                            id="eye-icon-box2"><i class="bi bi-eye" id="eye-icon2"></i></span>
+                                        <div class="invalid-feedback" id="passinvalid2">
+                                            Please enter a valid password.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mb-3 ">
+                                    <div class="form-check p-0 text-center d-flex justify-content-center ">
+                                        <input class="form-check-input mx-2" type="checkbox" value="" id="tos">
+                                        <label class="form-check-label">I agree to Emotions <a
+                                                href="https://www.termsfeed.com/live/93cd79e2-f771-453b-a856-f0f5ae1d07eb">Terms
+                                                and Conditions</a>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="row  d-flex justify-content-center text-center text-break">
+                                    <button type="submit" class="btn btn-primary col-8 disabled" id="create-btn"
+                                        value="Submit">Create
+                                        account</button>
+                                    <p> Already have an account? <a href="/login"> Login</a></p>
                                 </div>
                             </div>
-                        </div>
-
-                        <div class="row mb-3">
-                            <div class="input-group has-validation m-0 p-0">
-                                <input type="password" name="password" class="form-control" id="passinput2"
-                                    placeholder="Confirm Password" required><span class="input-group-text" id="eye-icon-box2"><i
-                                        class="bi bi-eye" id="eye-icon2"></i></span>
-                                <div class="invalid-feedback" id="passinvalid2">
-                                    Please enter a valid password.
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mb-3 ">
-                            <div class="form-check p-0 text-center d-flex justify-content-center ">
-                                <input class="form-check-input mx-2" type="checkbox" value="" id="tos">
-                                <label class="form-check-label" >I agree to Emotions <a
-                                        href="https://www.termsfeed.com/live/93cd79e2-f771-453b-a856-f0f5ae1d07eb">Terms and Conditions</a>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div class="row  d-flex justify-content-center text-center text-break">
-                            <button type="submit" class="btn btn-primary col-8 disabled" id="create-btn"
-                                value="Submit">Create
-                                account</button>
-                            <p> Already have an account? <a href="/login"> Login</a></p>
-                        </div>
+                        </form>
                     </div>
-                </form>
-            </div>
         </div>
 
 
@@ -102,13 +103,13 @@
                 integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
                 crossorigin="anonymous"></script>
             <script src="/scripts/signup.js"></script>
-            
+
             <!-- Script to fill form from url parameters for redirect from login with email where account doesn't exist -->
             <script>
                 (new URL(window.location.href)).searchParams.forEach((x, y) =>
-            document.getElementById(y).value = x)
+                    document.getElementById(y).value = x)
             </script>
-            
+
 </body>
 
 </html>

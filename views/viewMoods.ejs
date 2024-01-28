@@ -24,7 +24,7 @@
 
                 <% if(typeof errMessage !="undefined" && errMessage) { %>
                     <div class="mt-5 mb-3">
-                        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
                             <strong>
                                 <%= errMessage %>
                             </strong>
@@ -177,10 +177,10 @@
                                                         <!-- Button trigger edit modal -->
                                                         <li><button class="dropdown-item d-flex justify-content-between"
                                                                 data-bs-toggle="modal" data-bs-target="#editModal"
-                                                            type="button"
-                                                            onclick="editMood(<%=mood.mood_id%>, '<%=mood.context_comment%>')">Edit<i
-                                                                class="bi bi-pencil-square mx-1"></i></button>
-                                                    </li>
+                                                                type="button"
+                                                                onclick="editMood(<%=mood.mood_id%>, '<%=mood.context_comment%>')">Edit<i
+                                                                    class="bi bi-pencil-square mx-1"></i></button>
+                                                        </li>
 
                                                         <!-- Button trigger delete modal -->
                                                         <li><button type="button"
@@ -321,7 +321,7 @@
 
 
 
-            <nav class="container-fluid text-center mt-2 mb-0 " aria-label="Page navigation hstack">
+            <nav class="container-fluid text-center mt-auto mb-0 " aria-label="Page navigation hstack">
                 <ul class="pagination justify-content-center p-0 mx-2 mb-2">
                     <li class="page-item ">
                         <a class="page-link" id="prev-page" onclick="prevPage()">Previous</a>
@@ -346,12 +346,12 @@
                         deleteMoodForm.action = "/mood/delete/" + id;
                     }
 
-                function editMood(id, comment) {
-                    const contextComment = document.getElementById('context-comment');
-                    const updateMoodForm = document.getElementById('form-update-mood');
+                    function editMood(id, comment) {
+                        const contextComment = document.getElementById('context-comment');
+                        const updateMoodForm = document.getElementById('form-update-mood');
                         updateMoodForm.action = "/mood/update/" + id;
-                        contextComment.innerHTML = comment;                       
-                       
+                        contextComment.innerHTML = comment;
+
                     }
                 </script>
                 <script src="/scripts/moodPagination.js" total-pages="<%= totalPages%>"></script>

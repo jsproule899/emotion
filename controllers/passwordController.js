@@ -2,8 +2,12 @@ const dbPool = require('../dbService.js');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
-const { env } = require('process');
-const dotenv = require('dotenv').config()
+require('dotenv').config()
+
+
+const getForgotPassword = (req, res) => {
+    res.render('forgotPassword')
+}
 
 const handleForgotPassword = (req, res) => {
     const { email } = req.body;
@@ -14,7 +18,6 @@ const handleForgotPassword = (req, res) => {
         const transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 465,
-
             auth: {
                 type: 'OAUTH2',
                 user: 'mindyourself.onthewifi@gmail.com',
@@ -39,122 +42,92 @@ const handleForgotPassword = (req, res) => {
                 res.redirect()
             }
         });
-
     }).catch(err => {
-
         if (err.message === 'Account does not exist') {
-            res.redirect(`/signup?emailinput=${email}`);
+            res.redirect(`/signup?emailinput=${email}&errMessage=`+err.message);
+        }else{
+            res.render('forgotPassword', { errMessage: err.message });
         }
     });
 
 }
+const getResetPassword = (req, res) => {
+    const { token } = req.params;
+    const { errMessage } = req.query;
+    if (errMessage) {
+        res.render('resetPassword', { errMessage, token })
+    } else {
+        res.render('resetPassword', { token })
+    }
+}
+
 
 const handleResetPassword = (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
-
     getUserByToken(token).then(user => {
         bcrypt.hash(password, 10, (err, hash) => {
             if (err) throw (err);
             setPasswordByuser(hash, user.user_id)
-
+            setTokenByuser(null, user.user_id)
         })
-
-        setTokenByuser(null, user.user_id)
         res.redirect('/login?successMessage=Password updated successfully');
     }).catch(err => {
-       if (err) res.redirect('/password/reset?errMessage=Invalid or expired token')
+        if (err) res.redirect('/password/reset/invalid?errMessage=Invalid or expired token')
     });
 }
 
 
 async function getUserByEmail(email) {
+    return await new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM user WHERE email = ?';
+        dbPool.query(query, [email], (err, result) => {
+            if (err) reject(new Error(err.message));
+            if (!result[0]) reject(new Error("Account does not exist"));
+            resolve(result[0]);
 
-    try {
-
-        return await new Promise((resolve, reject) => {
-            const query = 'SELECT * FROM user WHERE email = ?';
-            dbPool.query(query, [email], (err, result) => {
-
-                if (err) reject(new Error(err.message));
-                if (!result[0]) reject(new Error("Account does not exist"));
-                if (result[0]) resolve(result[0]);
-
-            });
         });
-
-
-    } catch (error) {
-
-        throw error;
-    }
+    });
 }
 
 async function setTokenByuser(token, id) {
-
-    try {
-
-        return await new Promise((resolve, reject) => {
-            const query = 'UPDATE user SET reset_token = ? WHERE user_id = ?';
-            dbPool.query(query, [token, id], (err, result) => {
-                if (err) reject(new Error(err.message));
-                resolve(result);
-
-            });
+    return await new Promise((resolve, reject) => {
+        const query = 'UPDATE user SET reset_token = ? WHERE user_id = ?';
+        dbPool.query(query, [token, id], (err, result) => {
+            if (err) reject(new Error(err.message));
+            resolve(result);
         });
-
-
-    } catch (error) {
-
-        throw error;
-    }
+    });
 }
 
 async function getUserByToken(token) {
 
-    try {
-
-        return await new Promise((resolve, reject) => {
-            const query = 'SELECT * FROM user WHERE reset_token = ?';
-            dbPool.query(query, [token], (err, result) => {
-                if (err) reject(new Error(err.message));
-                if (!result[0]) reject(new Error("Account with that token does not exist"));
-                if (result[0]) resolve(result[0]);
-
-            });
+    return await new Promise((resolve, reject) => {
+        const query = 'SELECT * FROM user WHERE reset_token = ?';
+        dbPool.query(query, [token], (err, result) => {
+            if (err) reject(new Error(err.message));
+            if (!result[0]) reject(new Error("Account with that token does not exist"));
+            resolve(result[0]);
         });
-
-
-    } catch (error) {
-
-        throw error;
-    }
+    });
 }
 
 async function setPasswordByuser(hash, id) {
-
-    try {
-
-        return await new Promise((resolve, reject) => {
-            const query = 'UPDATE user SET password = ? WHERE user_id = ?';
-            dbPool.query(query, [hash, id], (err, result) => {
-                if (err) reject(new Error(err.message));
-                resolve(result);
-
-            });
+    return await new Promise((resolve, reject) => {
+        const query = 'UPDATE user SET password = ? WHERE user_id = ?';
+        dbPool.query(query, [hash, id], (err, result) => {
+            if (err) reject(new Error(err.message));
+            resolve(result);
         });
-
-
-    } catch (error) {
-
-        throw error;
-    }
+    });
 }
 
 
 
 
 module.exports = {
+    getForgotPassword,
     handleForgotPassword,
+    getResetPassword,
     handleResetPassword
 }

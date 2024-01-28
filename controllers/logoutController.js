@@ -1,5 +1,3 @@
-require('dotenv').config();
-
 
 const handleLogout = (req, res) => {
     const cookies = req.cookies;

@@ -12,8 +12,8 @@ const dbPool = mysql.createPool({
 })
 
 dbPool.getConnection((err,conn )=>{
-if(err) console.log("Database not connected");
-console.log("db status:"+ conn.state);
+if(err) return console.log('\x1b[31m','Database not connected, please start the DB server' ,'\x1b[0m');
+console.log('\x1b[32m',"db status:"+ conn.state ,'\x1b[0m');
 })
 
 module.exports =  dbPool ;

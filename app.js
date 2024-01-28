@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 require('dotenv').config({path:'./.env'});
 const morgan = require('morgan');
-const cors = require('cors');
 const verifyJWT = require('./middleware/verifyJWT')
 const cookieParser = require('cookie-parser');
 
@@ -33,7 +32,7 @@ app.use('/password', require('./routes/passwordRouter'))
 
 //protected routes
 app.use(verifyJWT); 
-app.use('/', require('./routes/rootRouter'));
+app.use('/', require('./routes/homeRouter'));
 app.use('/mood', require('./routes/moodRouter'));
 
 

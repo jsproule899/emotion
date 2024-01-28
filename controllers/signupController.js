@@ -3,6 +3,11 @@ const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
+const getSignup = (req, res) => {
+    const { successMessage, errMessage } = req.query;
+    res.render('signup', {successMessage, errMessage});
+ }
+
 const handleSignup = (req, res) => {
     const { username, email, password } = req.body;
 
@@ -73,5 +78,5 @@ async function createAccount(username, email, password) {
 
 }
 
-module.exports = { handleSignup }
+module.exports = { getSignup, handleSignup }
 
