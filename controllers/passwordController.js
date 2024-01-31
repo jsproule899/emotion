@@ -39,7 +39,7 @@ const handleForgotPassword = (req, res) => {
             } else {
                 console.log(`Email sent: ${info.response}`);
                 res.status(200).render('forgotPassword', { sucessMessage: 'Email sent check your mail to reset your password!' });
-                res.redirect()
+                
             }
         });
     }).catch(err => {

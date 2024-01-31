@@ -20,7 +20,7 @@
         <%- include('partials/viewFilters') %>
 
             <script> document.getElementById("nav-view").classList.add("active")</script>
-            <div class=" container-fluid mt-3 mb-5 pb-3 mx-auto">
+            <div class=" container-fluid mt-3 mb-auto pb-3 mx-auto">
 
                 <% if(typeof errMessage !="undefined" && errMessage) { %>
                     <div class="mt-5 mb-3">
@@ -321,8 +321,8 @@
 
 
 
-            <nav class="container-fluid text-center mt-auto mb-0 " aria-label="Page navigation hstack">
-                <ul class="pagination justify-content-center p-0 mx-2 mb-2">
+            <nav class="container text-center mt-auto mb-2 mt-auto" aria-label="Page navigation hstack">
+                <ul class="pagination justify-content-center p-0 mx-2">
                     <li class="page-item ">
                         <a class="page-link" id="prev-page" onclick="prevPage()">Previous</a>
                     </li>

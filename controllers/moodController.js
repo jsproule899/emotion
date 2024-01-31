@@ -70,8 +70,7 @@ const getMoodsByUser = async (req, res) => {
                             console.log(err)
                             return res.render('viewMoods', { moods: null, user, totalPages: 1, errMessage: "Cannot show Moods at this moment, please try again later...", contextType })
                         })
-                    } else {
-                        console.log(err)
+                    } else {                      
                         connection.release(); return res.render('viewMoods', { moods: null, user, totalPages: 1, contextType });
                     }
                 });

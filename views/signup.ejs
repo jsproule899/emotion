@@ -15,7 +15,7 @@
 
 <body>
     <%- include('partials/navbar') %>
-        <div class="container">
+        <div class="container mb-auto">
 
             <% if(typeof errMessage !="undefined" && errMessage) { %>
                 <div class="mt-5 mb-3">
@@ -41,7 +41,7 @@
                                         placeholder="Username" required>
 
                                     <div class="invalid-feedback">
-                                        Please enter a letters or numbers, must be at least 6 characters.
+                                        Please enter letters and/or numbers only, must be at least 6 characters and have no spaces.
                                     </div>
                                 </div>
 
