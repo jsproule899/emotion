@@ -10,4 +10,10 @@ router.route('/reset/:token')
     .get(passwordController.getResetPassword)
     .post(passwordController.handleResetPassword);
 
+
+router.route('/cancel/:token')
+    .get(passwordController.getCancelReset)
+    .post(passwordController.handleCancelReset);
+
+
 module.exports = router;

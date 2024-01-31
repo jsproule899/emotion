@@ -30,7 +30,9 @@ const handleForgotPassword = (req, res) => {
             from: 'mindyourself.onthewifi@gmail.com',
             to: email,
             subject: 'MindYourSelf Password Reset',
-            text: `Click the following link to reset your password: https://mindyourself.onthewifi.com/password/reset/${token} or \nClick the following link to reset your password: http://localhost:3000/password/reset/${token} if running locally`,
+            text: `Click the following link to reset your password: https://mindyourself.onthewifi.com/password/reset/${token} or 
+            \nClick the following link to reset your password: http://localhost:3000/password/reset/${token} if running locally
+            Didn't request this change? http://localhost:3000/password/cancel/${token} Let us know!`
         };
         transporter.sendMail(mailOptions, (error, info) => {
             if (error) {
@@ -39,13 +41,13 @@ const handleForgotPassword = (req, res) => {
             } else {
                 console.log(`Email sent: ${info.response}`);
                 res.status(200).render('forgotPassword', { sucessMessage: 'Email sent check your mail to reset your password!' });
-                
+
             }
         });
     }).catch(err => {
         if (err.message === 'Account does not exist') {
-            res.redirect(`/signup?emailinput=${email}&errMessage=`+err.message);
-        }else{
+            res.redirect(`/signup?emailinput=${email}&errMessage=` + err.message);
+        } else {
             res.render('forgotPassword', { errMessage: err.message });
         }
     });
@@ -77,9 +79,26 @@ const handleResetPassword = (req, res) => {
     });
 }
 
+const getCancelReset = (req, res) => {
+    const { token } = req.params;
+    res.render('cancelReset', {token})
+}
 
-async function getUserByEmail(email) {
-    return await new Promise((resolve, reject) => {
+const handleCancelReset = (req, res) => {
+    const { token } = req.params;
+    getUserByToken(token).then(user => {
+        setTokenByuser(null, user.user_id)
+        return res.redirect('/');
+    }).catch(err => {
+        if (err) res.redirect('/password/reset/invalid?errMessage=Invalid or expired token')
+    });
+
+
+}
+
+
+function getUserByEmail(email) {
+    return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM user WHERE email = ?';
         dbPool.query(query, [email], (err, result) => {
             if (err) reject(new Error(err.message));
@@ -90,8 +109,8 @@ async function getUserByEmail(email) {
     });
 }
 
-async function setTokenByuser(token, id) {
-    return await new Promise((resolve, reject) => {
+function setTokenByuser(token, id) {
+    return new Promise((resolve, reject) => {
         const query = 'UPDATE user SET reset_token = ? WHERE user_id = ?';
         dbPool.query(query, [token, id], (err, result) => {
             if (err) reject(new Error(err.message));
@@ -100,9 +119,9 @@ async function setTokenByuser(token, id) {
     });
 }
 
-async function getUserByToken(token) {
+function getUserByToken(token) {
 
-    return await new Promise((resolve, reject) => {
+    return new Promise((resolve, reject) => {
         const query = 'SELECT * FROM user WHERE reset_token = ?';
         dbPool.query(query, [token], (err, result) => {
             if (err) reject(new Error(err.message));
@@ -112,8 +131,8 @@ async function getUserByToken(token) {
     });
 }
 
-async function setPasswordByuser(hash, id) {
-    return await new Promise((resolve, reject) => {
+function setPasswordByuser(hash, id) {
+    return new Promise((resolve, reject) => {
         const query = 'UPDATE user SET password = ? WHERE user_id = ?';
         dbPool.query(query, [hash, id], (err, result) => {
             if (err) reject(new Error(err.message));
@@ -129,5 +148,7 @@ module.exports = {
     getForgotPassword,
     handleForgotPassword,
     getResetPassword,
-    handleResetPassword
+    handleResetPassword,
+    getCancelReset,
+    handleCancelReset,
 }
