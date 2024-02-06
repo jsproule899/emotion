@@ -19,6 +19,23 @@
     <%- include('partials/navbar') %>
         <script> document.getElementById("nav-add").classList.add("active")</script>
 
+        <% if(typeof errMessage !="undefined" && errMessage) { %>
+            <div class="mt-5 mb-3">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>
+                        <%= errMessage %>
+                    </strong>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            </div>
+ 
+        <div class="mb-auto text-center">
+            <a href="/"><button class="btn btn-primary">Home</button></a>
+        </div>
+            <% } else {%>
+
+
+
         <div class="my-3 error-alert" id="error-alert">
             <div class="alert alert-danger alert-dismissible fade show" role="alert">
                 <strong id="error-msg">
@@ -53,7 +70,7 @@
 
                 <form class="pt-3 d-flex justify-content-center" action="/mood/add" method="post">
                     <div class="col-10">
-                        <%emotions.forEach(emotions=>{%>
+                        <% emotions.forEach(emotions=>{%>
                             <div class="row">
                                 <div class="col-12 mx-auto text-center">
                                     <label class="form-label fw-medium fs-4 mb-0"><%-
@@ -89,9 +106,10 @@
                             <%}); %>
 
                                 <div class="row my-2">
-                                    <div class="col-1 my-2 p-0 d-flex text-center align-items-center justify-content-center ">
+                                    <div
+                                        class="col-1 my-2 p-0 d-flex text-center align-items-center justify-content-center ">
                                         <i class="bi bi-arrow-left-short fs-3 cursor-p" id="context-scroll-left"></i>
-                                  </div>
+                                    </div>
                                     <div class="col-10 my-2 mx-0 p-0 d-flex justify-content-center align-items-center ">
                                         <ul class="list-group list-group-horizontal mb-3 overflow-x-scroll context-scroll"
                                             id="context-list">
@@ -129,8 +147,9 @@
                                                 <% }) %>
                                         </ul>
                                     </div>
-                                    <div class="col-1 my-2 p-0 d-flex text-center align-items-center justify-content-center ">
-                                          <i class="bi bi-arrow-right-short fs-3 cursor-p" id="context-scroll-right"></i>
+                                    <div
+                                        class="col-1 my-2 p-0 d-flex text-center align-items-center justify-content-center ">
+                                        <i class="bi bi-arrow-right-short fs-3 cursor-p" id="context-scroll-right"></i>
                                     </div>
                                     <script>
                                         const contextScrollRight = document.getElementById('context-scroll-right');
@@ -159,6 +178,7 @@
                                     <button type="submit" class="btn btn-primary col-8 my-3" id="addbtn">Add
                                         mood</button>
                                 </div>
+                                <% } %>
                 </form>
             </div>
         </div>

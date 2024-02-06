@@ -165,7 +165,7 @@
                                         <div class="card mood-card h-100 shadow">
                                             <div class="card-header  d-flex justify-content-between ">
                                                 <div><i class="bi bi-calendar-event mx-1"></i>
-                                                    <%=mood.mood_timestamp.toString().substring(0,21) %>
+                                                    <%=new Date(mood.mood_timestamp).toString().substring(0,21) %>
                                                 </div>
                                                 <div class="dropdown d-flex align-items-end">
 

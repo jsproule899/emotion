@@ -6,6 +6,12 @@ const getHome = (req, res) => {
 
 }
 
+const get404 = (req, res) => {
+    res.status(404);
+    res.render('404');
+}
+
 module.exports= {
-    getHome
+    getHome,
+    get404
 }
