@@ -48,14 +48,18 @@
     <!-- Day Chart -->
 
     <%if(todaysMoodData.length==0 ){ %>
-      <div class="container chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
-        <h1 class="text-center">You haven't added a Mood today... <a href="/mood/add"> Add
-            mood?</a>
-        </h1>
+      <div class="container">
+        <div class="chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
+          <h1 class="text-center">You haven't added a Mood today... <a href="/mood/add"> Add
+              mood?</a>
+          </h1>
+        </div>
       </div>
       <%}else{ %>
-        <div class="container chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow d-flex">
-          <canvas id="day-chart"></canvas>
+        <div class="container">
+          <div class="chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow d-flex">
+            <canvas id="day-chart"></canvas>
+          </div>
         </div>
 
         <script>
@@ -112,15 +116,19 @@
           <!-- Week Chart -->
 
           <%if(false){ %>
-            <div class="container chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
-              <h1 class="text-center">You haven't added any Moods for this week... <a href="/mood/add"> Add
-                  mood?</a>
-              </h1>
+            <div class="container">
+              <div class=" chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
+                <h1 class="text-center">You haven't added any Moods for this week... <a href="/mood/add"> Add
+                    mood?</a>
+                </h1>
+              </div>
             </div>
 
             <%}else{ %>
-              <div class="container chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
-                <canvas id="week-chart"></canvas>
+              <div class="container">
+                <div class="container chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
+                  <canvas id="week-chart"></canvas>
+                </div>
               </div>
 
               <script>
@@ -258,14 +266,18 @@
                 <!-- Line Chart -->
 
                 <%if(lineData.size<3 ){ %>
-                  <div class="container chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
-                    <h1 class="text-center">Not enough data points <a href="/mood/add"> Add
-                        mood?</a>
-                    </h1>
+                  <div class="container">
+                    <div class=" chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
+                      <h1 class="text-center">Not enough data points <a href="/mood/add"> Add
+                          mood?</a>
+                      </h1>
+                    </div>
                   </div>
                   <%}else{ %>
-                    <div class="container chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
-                      <canvas id="line-chart"></canvas>
+                    <div class="container">
+                      <div class=" chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
+                        <canvas id="line-chart"></canvas>
+                      </div>
                     </div>
 
                     <script>
@@ -307,7 +319,7 @@
 
                               }
                             },
-                            y:{
+                            y: {
                               min: 0,
                               max: 10
                             }
