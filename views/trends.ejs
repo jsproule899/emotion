@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MindYourSelf - Home</title>
+  <link rel="icon" href="/img/emotion.png">
+  <script src="/scripts/loader.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.2/font/bootstrap-icons.min.css">
+  <link rel="stylesheet" href="/styles/mystyles.css">
+  <Script src="/scripts/theme.js"></Script>
+</head>
+
+<body onresize="responseiveFont()">
+  <div id="loader" class="center" style="z-index: 9999;"></div>
+  <%- include('partials/navbar') %>
+    <script> document.getElementById("nav-summary").classList.add("active")</script>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/chartjs-adapter-date-fns/dist/chartjs-adapter-date-fns.bundle.min.js"></script>
+
+    <script>
+      function responseiveFont() {
+        if (window.outerWidth > 999) {
+          Chart.defaults.font.size = 16;
+          Chart.defaults.plugins.title.font.size = 24;
+          Chart.defaults.pointStyleWidth = 16;
+        }
+        if (window.outerWidth < 999 && window.outerWidth > 425) {
+          Chart.defaults.font.size = 14;
+          Chart.defaults.plugins.title.font.size = 20;
+          Chart.defaults.pointStyleWidth = 14;
+        }
+        if (window.outerWidth < 425) {
+          Chart.defaults.font.size = 12;
+          Chart.defaults.plugins.title.font.size = 18;
+          Chart.defaults.pointStyleWidth = 12;
+
+        }
+
+      }
+
+    </script>
+    <!-- Day Chart -->
+
+    <%if(todaysMoodData.length==0 ){ %>
+      <div class="container chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
+        <h1 class="text-center">You haven't added a Mood today... <a href="/mood/add"> Add
+            mood?</a>
+        </h1>
+      </div>
+      <%}else{ %>
+        <div class="container chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow d-flex">
+          <canvas id="day-chart"></canvas>
+        </div>
+
+        <script>
+          const dayCtx = document.getElementById('day-chart');
+          responseiveFont()
+
+          const dayChart = new Chart(dayCtx, {
+            type: 'doughnut',
+
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              active: true,
+              animation: true,
+              borderWidth: 0,
+              plugins: {
+                legend: {
+                  display: true,
+                  position: 'bottom',
+                  onClick: null,
+                  labels: {
+                    pointStyle: 'circle',
+                    usePointStyle: true,
+                  }
+                },
+                tooltip: {
+                  enabled: true,
+                  displayColors: false
+                },
+                title: {
+                  display: true,
+                  text: 'Todays Average Mood',
+                }
+              },
+
+            },
+            data: {
+              labels: ['Enjoyment', 'Sadness', 'Anger', 'Contempt', 'Disgust', 'Fear', 'Surprise'],
+              datasets: [{
+                data: [<%= todaysMoodData %>],
+                backgroundColor: ['MediumSeaGreen', 'CornflowerBlue', 'Indianred', 'LightPink', 'MediumPurple', 'Chocolate', 'Goldenrod'],
+
+              }]
+            }
+
+          });
+        </script>
+        <%}%>
+
+
+
+
+          </script>
+          <!-- Week Chart -->
+
+          <%if(false){ %>
+            <div class="container chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
+              <h1 class="text-center">You haven't added any Moods for this week... <a href="/mood/add"> Add
+                  mood?</a>
+              </h1>
+            </div>
+
+            <%}else{ %>
+              <div class="container chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
+                <canvas id="week-chart"></canvas>
+              </div>
+
+              <script>
+
+                const ctx = document.getElementById('week-chart');
+                responseiveFont()
+
+                const weekMoodData = '<%- JSON.stringify(weekMoodData) %>';
+                const weekData = JSON.parse(weekMoodData)
+                console.log(weekData)
+
+                const weekChart = new Chart(ctx, {
+                  type: 'bar',
+
+                  options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    active: true,
+                    animation: true,
+                    plugins: {
+                      legend: {
+                        display: true,
+                        position: 'bottom',
+                        labels: {
+                          pointStyle: 'circle',
+                          usePointStyle: true,
+                        }
+                      },
+                      tooltip: {
+                        enabled: true,
+                        displayColors: false,
+                        callbacks: {
+                          title: () => null
+                        }
+                        ,
+                      },
+                      title: {
+                        display: true,
+                        text: 'This weeks Moods',
+                      }
+                    },
+                    scales: {
+                      x: {
+                        stacked: true,
+
+                      },
+                      y: {
+                        display: false,
+                        stacked: true,
+                        beginAtZero: true,
+                        min: 0,
+                        max: 70
+
+                      }
+                    }
+                  },
+                  data: {
+                    labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+                    datasets: [{
+                      label: 'Enjoyment',
+                      data: weekData.map(day => {
+                        if (!day) return null;
+                        return day[0]
+                      }),
+                      borderWidth: 1,
+                      backgroundColor: 'MediumSeaGreen',
+                      borderRadius: 5,
+                    },
+                    {
+                      label: 'Sadness',
+                      data: weekData.map(day => {
+                        if (!day) return null;
+                        return day[1]
+                      }),
+                      borderWidth: 1,
+                      backgroundColor: 'CornflowerBlue',
+                      borderRadius: 5,
+                    },
+                    {
+                      label: 'Anger',
+                      data: weekData.map(day => {
+                        if (!day) return null;
+                        return day[2]
+                      }),
+                      borderWidth: 1,
+                      backgroundColor: 'Indianred',
+                      borderRadius: 5,
+                    },
+                    {
+                      label: 'Contempt',
+                      data: weekData.map(day => {
+                        if (!day) return null;
+                        return day[3]
+                      }),
+                      borderWidth: 1,
+                      backgroundColor: 'LightPink',
+                      borderRadius: 5,
+                    },
+                    {
+                      label: 'Disgust',
+                      data: weekData.map(day => {
+                        if (!day) return null;
+                        return day[4]
+                      }),
+                      borderWidth: 1,
+                      backgroundColor: 'MediumPurple',
+                      borderRadius: 5,
+                    },
+                    {
+                      label: 'Fear',
+                      data: weekData.map(day => {
+                        if (!day) return null;
+                        return day[5]
+                      }),
+                      borderWidth: 1,
+                      backgroundColor: 'Chocolate',
+                      borderRadius: 5,
+                    },
+                    {
+                      label: 'Surprise',
+                      data: weekData.map(day => {
+                        if (!day) return null;
+                        return day[6]
+                      }),
+                      borderWidth: 1,
+                      backgroundColor: 'Goldenrod',
+                      borderRadius: 5,
+                    }]
+                  }
+
+                });
+              </script>
+              <%}%>
+
+                <!-- Line Chart -->
+
+                <%if(lineData.size<3 ){ %>
+                  <div class="container chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
+                    <h1 class="text-center">Not enough data points <a href="/mood/add"> Add
+                        mood?</a>
+                    </h1>
+                  </div>
+                  <%}else{ %>
+                    <div class="container chart-container py-3 my-4 bg-body-tertiary rounded-2 shadow">
+                      <canvas id="line-chart"></canvas>
+                    </div>
+
+                    <script>
+
+                      const ctxLine = document.getElementById('line-chart');
+                      const dates = '<%- JSON.stringify(Array.from(lineData.keys())) %>';
+                      const levels = '<%- JSON.stringify(Array.from(lineData.values())) %>';
+
+                      const xLabelsDates = JSON.parse(dates);
+                      const yLabels = JSON.parse(levels);
+                      const [yEnjoyment, ySadness, yAnger, yContempt, yDisgust, yFear, ySurprise] = [[], [], [], [], [], [], []]
+
+                      yLabels.map(level => {
+                        yEnjoyment.push(level[0])
+                        ySadness.push(level[1])
+                        yAnger.push(level[2])
+                        yContempt.push(level[3])
+                        yDisgust.push(level[4])
+                        yFear.push(level[5])
+                        ySurprise.push(level[6])
+                      })
+
+                      responseiveFont()
+                      const lineChart = new Chart(ctxLine, {
+                        type: 'line',
+
+                        options: {
+                          responsive: true,
+                          maintainAspectRatio: false,
+                          active: true,
+                          animation: true,
+                          tension: 0.4,
+                          scales: {
+                            x: {
+                              type: 'timeseries',
+                              time: {
+                                unit: 'day',
+
+                              }
+                            },
+                            y:{
+                              min: 0,
+                              max: 10
+                            }
+                          },
+
+
+                          plugins: {
+                            legend: {
+                              display: true,
+                              position: 'bottom',
+                              labels: {
+                                pointStyle: 'circle',
+                                usePointStyle: true,
+                              }
+
+                            },
+                            tooltip: {
+                              enabled: true
+                            },
+                            title: {
+                              display: true,
+                              text: 'Emotions over Time',
+                            }
+                          },
+                        },
+
+                        data: {
+                          datasets: [{
+                            data: yEnjoyment.map((level, index) => {
+                              return {
+                                x: xLabelsDates[index],
+                                y: level
+
+                              }
+                            }),
+                            label: 'Enjoyment',
+                            backgroundColor: 'MediumSeaGreen',
+                            borderColor: 'MediumSeaGreen'
+                          }, {
+                            data: ySadness.map((level, index) => {
+                              return {
+                                x: xLabelsDates[index],
+                                y: level
+
+                              }
+                            }),
+                            label: 'Sadness',
+                            backgroundColor: 'CornflowerBlue',
+                            borderColor: 'CornflowerBlue',
+                          },
+                          {
+                            data: yAnger.map((level, index) => {
+                              return {
+                                x: xLabelsDates[index],
+                                y: level
+
+                              }
+                            }),
+                            label: 'Anger',
+                            backgroundColor: 'Indianred',
+                            borderColor: 'Indianred',
+                          },
+                          {
+                            data: yContempt.map((level, index) => {
+                              return {
+                                x: xLabelsDates[index],
+                                y: level
+
+                              }
+                            }),
+                            label: 'Contempt',
+                            backgroundColor: 'LightPink',
+                            borderColor: 'LightPink',
+                          },
+                          {
+                            data: yDisgust.map((level, index) => {
+                              return {
+                                x: xLabelsDates[index],
+                                y: level
+
+                              }
+                            }),
+                            label: 'Disgust',
+                            backgroundColor: 'MediumPurple',
+                            borderColor: 'MediumPurple',
+                          },
+                          {
+                            data: yFear.map((level, index) => {
+                              return {
+                                x: xLabelsDates[index],
+                                y: level
+
+                              }
+                            }),
+                            label: 'Fear',
+                            backgroundColor: 'Chocolate',
+                            borderColor: 'Chocolate',
+                          },
+                          {
+                            data: ySurprise.map((level, index) => {
+
+                              return {
+                                x: xLabelsDates[index],
+                                y: level
+                              }
+
+                            }),
+                            label: 'Surprise',
+                            backgroundColor: 'Goldenrod',
+                            borderColor: 'Goldenrod',
+                          }],
+
+                        }
+
+                      });
+                    </script>
+                    <div class="mb-auto"></div>
+                    <%}%>
+                      <%- include('partials/footer') %>
+                        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+                          integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+                          crossorigin="anonymous"></script>
+</body>
+
+</html>

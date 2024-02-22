@@ -36,7 +36,7 @@ const getMoodsByUser = async (req, res) => {
     }).catch(err => {
         if (err.response.status == 500) {
             res.render('viewMoods',
-                { moods: null, user, totalPages: 1, errMessage: err, contextType });
+                { moods: null, user, totalPages: 1, errMessage: err.response.statusText, contextType });
         } else if (err.response.status == 404) {
             res.render('viewMoods', { moods: null, user, totalPages: 1, contextType });
         }

@@ -32,11 +32,11 @@ eyeIconBox2.addEventListener('click', () => {
 
 
 tosCheckbox.addEventListener('change', () => validateForm());
-usernameInput.addEventListener("blur", () => validateForm());
-emailInput.addEventListener("blur", () => validateForm());
-passInput1.addEventListener("input", () => validateForm());
-passInput1.addEventListener("blur", () => validateForm());
-passInput2.addEventListener("blur", () => validateForm());
+usernameInput.addEventListener("blur", () => {validateUsername(); validateForm()});
+emailInput.addEventListener("blur", () => {validateEmail(); validateForm()});
+passInput1.addEventListener("input", () => {validatePassword(); validateForm()});
+passInput1.addEventListener("blur", () => {validatePassword(); validateForm()});
+passInput2.addEventListener("blur", () => {confirmPassword(); validateForm()});
 
 function validateUsername() {
     var validUsername = /^[a-zA-Z0-9]{6,16}$/g;
@@ -108,7 +108,7 @@ function confirmPassword() {
         passInput1.classList.add('is-invalid');
         passInput2.classList.remove('is-valid');
         passInput2.classList.add('is-invalid');
-        passInvalid1.innerHTML = "Passwords do not match!";
+        
         passInvalid2.innerHTML = "Passwords do not match!";
         return false;
 

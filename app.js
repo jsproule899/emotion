@@ -29,6 +29,7 @@ app.use('/password', require('./routes/passwordRouter'))
 //protected routes
 app.use(verifyJWT); 
 app.use('/mood', require('./routes/moodRouter'));
+app.use('/trends', require('./routes/summaryRouter'))
 app.use('/', require('./routes/router'));
 
 

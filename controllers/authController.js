@@ -39,11 +39,11 @@ const handleSignup = (req, res) => {
                         res.redirect('/')
                     })
                     .catch(err => {
-                        res.render('signup.ejs', { errMessage: err.response.data.message });
+                        res.render('signup.ejs', { errMessage: err.response.statusText });
                     })
             })
         }).catch(err => {
-            res.render('signup.ejs', { errMessage: err.response.data.message });
+            res.render('signup.ejs', { errMessage: err.response.statusText });
 
         })
 }
@@ -87,8 +87,8 @@ const handleLogin = (req, res) => {
         .catch(err => {
             console.log(err)
             if (err.response.status === 500) {
-                console.log(err.response.data.message)
-                return res.render('login.ejs', { errMessage: err.response.data.message })
+                console.log(err.response.statusText)
+                return res.render('login.ejs', { errMessage: err.response.statusText })
             }
         });
 }

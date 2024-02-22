@@ -50,16 +50,16 @@ const handleForgotPassword = (req, res) => {
 
                 }).catch(err => {
                     if (err.response.status === 404) {
-                        res.redirect(`/signup?emailinput=${email}&errMessage=` + err.response.data.message);
+                        res.redirect(`/signup?emailinput=${email}&errMessage=` + err.response.statusText);
                     } else if (err.response.status === 500) {
-                        res.render('forgotPassword', { errMessage: err.response.data.message });
+                        res.render('forgotPassword', { errMessage: err.response.statusText });
                     }
                 });
         }).catch(err => {
             if (err.response.status === 404) {
                 res.redirect(`/signup?emailinput=${email}&errMessage=` + "Email doesn't exist, please sign up");
             } else if (err.response.status === 500) {
-                res.render('forgotPassword', { errMessage: err.response.data.message });
+                res.render('forgotPassword', { errMessage: err.response.statusText });
             }
         });
 }
@@ -88,7 +88,7 @@ const handleResetPassword = (req, res) => {
                     if (err.response.status === 404) {
                         res.redirect('/password/reset/invalid?errMessage=Invalid user ID')
                     } else if (err.response.status === 500) {
-                        res.redirect('/password/reset/invalid?errMessage=' + err.response.data.message)
+                        res.redirect('/password/reset/invalid?errMessage=' + err.response.statusText)
                     }
                 })
             const setTokenNull = axios.patch(`users/${user_id}/token`, {token: null})
@@ -96,7 +96,7 @@ const handleResetPassword = (req, res) => {
                     if (err.response.status === 404) {
                         res.redirect('/password/reset/invalid?errMessage=Invalid user ID')
                     } else if (err.response.status === 500) {
-                        res.redirect('/password/reset/invalid?errMessage=' + err.response.data.message)
+                        res.redirect('/password/reset/invalid?errMessage=' + err.response.statusText)
                     }
                 })
             Promise.all([setNewPassword, setTokenNull]).then(() => {
@@ -108,7 +108,7 @@ const handleResetPassword = (req, res) => {
         if (err.response.status === 404) {
             res.redirect('/password/reset/invalid?errMessage=Invalid or expired token')
         } else if (err.response.status === 500) {
-            res.redirect('/password/reset/invalid?errMessage=' + err.response.data.message)
+            res.redirect('/password/reset/invalid?errMessage=' + err.response.statusText)
         }
     });
 }
@@ -127,14 +127,14 @@ const handleCancelReset = (req, res) => {
             if (err.response.status === 404) {
                 res.redirect('/password/reset/invalid?errMessage=Invalid user ID')
             } else if (err.response.status === 500) {
-                res.redirect('/password/reset/invalid?errMessage=' + err.response.data.message)
+                res.redirect('/password/reset/invalid?errMessage=' + err.response.statusText)
             }
         })
     }).catch(err => {
         if (err.response.status === 404) {
             res.redirect('/password/reset/invalid?errMessage=Invalid or expired token')
         } else if (err.response.status === 500) {
-            res.redirect('/password/reset/invalid?errMessage=' + err.response.data.message)
+            res.redirect('/password/reset/invalid?errMessage=' + err.response.statusText)
         }
     })
 }
