@@ -17,7 +17,7 @@
 <body onresize="responseiveFont()">
   <div id="loader" class="center" style="z-index: 9999;"></div>
   <%- include('partials/navbar') %>
-    <script> document.getElementById("nav-summary").classList.add("active")</script>
+    <script> document.getElementById("nav-trends").classList.add("active")</script>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script
@@ -297,6 +297,7 @@
                           maintainAspectRatio: false,
                           active: true,
                           animation: true,
+                          cubicInterpolationMode: 'monotone',
                           tension: 0.4,
                           scales: {
                             x: {

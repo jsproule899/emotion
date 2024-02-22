@@ -3,11 +3,11 @@ axios.defaults.baseURL = 'http://localhost:3002'
 
 
 const getTrends = async (req, res) => {
-    if (!req.user) return res.redirect('/login')
+    if (!req.user) return res.redirect('auth/login')
     const user = req.user;
-    let lineData = new Map();
-    const todaysMoodData = [];
-    const weekMoodData = [];
+    var lineData = new Map();
+    var todaysMoodData = [];
+    var weekMoodData = [];
 
     //Average Mood Today Chart///////////////////////////
     const todayChart = await axios.get('/moods/date', {
@@ -38,13 +38,10 @@ const getTrends = async (req, res) => {
             todaysMoodData.push(Math.round(average));
 
         })
-    }).catch(err => {
+    })
+    .catch(err => {
         if (err.response) {
-            if (err.response.status == 500) {
-                res.render('trends.ejs', { user, lineData: [], todaysMoodData: [] })
-            } else if (err.response.status == 404) {
-                res.render('trends.ejs', { user, lineData, todaysMoodData: [], })
-            }
+            todaysMoodData=[]
         } else {
             console.log(err)
         }
@@ -64,21 +61,21 @@ const getTrends = async (req, res) => {
     }).then(response => {
         const moods = response.data.result;
         const weekMoods = new Array(7);
-        
-         moods.map((mood) => {
+
+        moods.map((mood) => {
             const moodDate = new Date(mood.mood_timestamp)
             var dayOfWeek = moodDate.getDay()
             if (!weekMoods[dayOfWeek]) weekMoods[dayOfWeek] = []
             weekMoods[dayOfWeek].push(mood);
         });
-         weekMoods.map((day, dayIndex) => {
+        weekMoods.map((day, dayIndex) => {
             day.map((mood) => {
                 const todaysMood = [];
                 mood.emotion.map((emotion, index) => {
                     if (!todaysMood[index]) todaysMood[index] = []
                     todaysMood[index].push(emotion.emotion_level)
                 });
-                  todaysMood.map((emotion) => {
+                todaysMood.map((emotion) => {
                     let total = 0;
                     emotion.forEach((level) => {
                         total += level;
@@ -90,14 +87,11 @@ const getTrends = async (req, res) => {
             });
         });
 
-        
-    }).catch(err => {
+
+    })
+    .catch(err => {
         if (err.response) {
-            if (err.response.status == 500) {
-                res.render('trends.ejs', { user, lineData: [], todaysMoodData: [] })
-            } else if (err.response.status == 404) {
-                res.render('trends.ejs', { user, lineData: [], todaysMoodData: [] })
-            }
+            weekMoodData= [];
         } else {
             console.log(err)
         }
@@ -121,15 +115,12 @@ const getTrends = async (req, res) => {
         });
 
         lineData = new Map([...lineData.entries()].sort())
-        
 
-    }).catch(err => {
+
+    })
+    .catch(err => {
         if (err.response) {
-            if (err.response.status == 500) {
-                res.render('trends.ejs', { user, lineData: [], todaysMoodData: [] })
-            } else if (err.response.status == 404) {
-                res.render('trends.ejs', { user, lineData: [], todaysMoodData: [] })
-            }
+           lineData = []
         } else {
             console.log(err)
         }
@@ -137,8 +128,21 @@ const getTrends = async (req, res) => {
 
     Promise.all([todayChart, weekChart, lineChart])
         .then(() => {
-           
+
             res.render('trends.ejs', { user, lineData, todaysMoodData, weekMoodData })
+        }).catch((err) => {
+            if (err.response) {
+
+                if (!lineData) lineData = [];
+                if (!todaysMoodData) todaysMoodData = [];
+                if (!weekMoodData) weekMoodData = [];
+                res.render('trends.ejs', { user, lineData, todaysMoodData, weekMoodData })
+
+
+
+            } else {
+                console.log(err)
+            }
         })
 
 

@@ -2,7 +2,7 @@ const axios = require('axios');
 axios.defaults.baseURL = 'http://localhost:3002'
 
 const getMoodsByUser = async (req, res) => {
-    if (!req.user) return res.redirect('/login')
+    if (!req.user) return res.redirect('/auth/login')
     const user = req.user;
     let page = parseInt(req.query.page) || 1;
     let limit = parseInt(req.query.limit) || 10;
@@ -46,7 +46,7 @@ const getMoodsByUser = async (req, res) => {
 }
 
 const getAddMood = async (req, res) => {
-    if (!req.user) return res.redirect('/login')
+    if (!req.user) return res.redirect('/auth/login')
     const user = req.user;
 
     const contextType = await axios.get('/context-type')
