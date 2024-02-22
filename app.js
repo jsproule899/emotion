@@ -30,7 +30,8 @@ app.use('/password', require('./routes/passwordRouter'))
 app.use(verifyJWT); 
 app.use('/mood', require('./routes/moodRouter'));
 app.use('/trends', require('./routes/summaryRouter'))
-app.use('/', require('./routes/router'));
+app.use('/', require('./routes/router'))
+;
 
 
 module.exports = app;
