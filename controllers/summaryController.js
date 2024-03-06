@@ -50,7 +50,8 @@ const getTrends = async (req, res) => {
     //week Chart//////////////////////////
     const date = new Date();
     const dateMinusWeek = new Date();
-    dateMinusWeek.setDate(dateMinusWeek.getDate() - 7)
+    const currentDay = date.getDay();
+    dateMinusWeek.setDate(dateMinusWeek.getDate() - currentDay)
     const weekChart = await axios.get('/moods/date', {
 
         params: {
